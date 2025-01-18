@@ -7,8 +7,8 @@ export const createProduct = {
             errorMessage: 'Item cannot be empty'
         },
         matches: {
-            options: /^(?=(.*[a-zA-Z]){6})[a-zA-Z]+$/,
-            errorMessage: 'Item cannot contain symbols or spaces'
+            options: /^(?=(.*[a-zA-Z]){6})[a-zA-Z\s]+$/,
+            errorMessage: 'Item cannot contain symbols'
         },
         trim: true,
     },
@@ -25,7 +25,6 @@ export const createProduct = {
     quantity: {
         isInt: {
             min: 1,
-            max: 9999,
             errorMessage: 'Quantity has to be a integer',
         },
         toInt: true,

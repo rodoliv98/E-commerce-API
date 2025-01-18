@@ -4,6 +4,7 @@ import session from 'express-session';
 import mongoose from 'mongoose';
 import passport from 'passport';
 import loginRoutes from './routes/login.js'
+import productRoutes from './routes/productRoutes.js'
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use('/', loginRoutes)
+app.use('/', productRoutes)
 
 
 app.listen(3000, () => console.log('Server running on localhost:3000/'));
