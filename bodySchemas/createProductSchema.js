@@ -7,7 +7,7 @@ export const createProduct = {
             errorMessage: 'Item cannot be empty'
         },
         matches: {
-            options: /^(?=(.*[a-zA-Z]){6})[a-zA-Z\s]+$/,
+            options: /^(?=(.*[a-zA-Z]){6})[a-zA-Z\s\W]+$/,
             errorMessage: 'Item cannot contain symbols'
         },
         trim: true,
