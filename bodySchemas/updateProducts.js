@@ -1,4 +1,4 @@
-export const createProduct = {
+export const updateProduct = {
     item: {
         isString: {
             errorMessage: 'Item has to be a string',
@@ -11,6 +11,7 @@ export const createProduct = {
             errorMessage: 'Item cannot contain symbols'
         },
         trim: true,
+        optional: true
     },
     price: {
         isInt: {
@@ -21,6 +22,7 @@ export const createProduct = {
             errorMessage: 'Price cannot be empty'
         },
         trim: true,
+        optional: true
     },
     quantity: {
         isInt: {
@@ -32,5 +34,6 @@ export const createProduct = {
             errorMessage: 'Quantity cannot be empty'
         },
         trim: true,
+        optional: true
     }
 }
