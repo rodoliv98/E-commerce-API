@@ -44,7 +44,6 @@ router.post('/products', checkSchema(createProduct), bodyValidator, async (req, 
 
 router.patch('/products/:id', checkSchema(updateProduct), bodyValidator, idCheck, async (req, res) => {
     const data = matchedData(req);
-    const productID = req.params.id;
     try{
         const updatedItem = await Product.findByIdAndUpdate(req.params.id, data, { new: true });
         if(!updatedItem) return res.status(404).send('Product not found');
