@@ -16,7 +16,7 @@ router.post('/register', checkSchema(createUserSchema), bodyValidator, async (re
         const hashedPassword = await bcrypt.hash(data.password, 10);
         const newUser = new User({ ...data, password: hashedPassword });
         await newUser.save();
-        return res.status(200).json({ message: 'User created' });
+        return res.status(200).send('User created');
     } catch(err){
         console.log(err);
         return res.status(500).send('Internal server error');
