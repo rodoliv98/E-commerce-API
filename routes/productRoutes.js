@@ -1,10 +1,13 @@
 import express from 'express'
-import { checkSchema, matchedData } from 'express-validator';
-import { createProduct } from '../bodySchemas/createProductSchema.js';
-import { updateProduct } from '../bodySchemas/updateProducts.js';
+import { checkSchema, matchedData } from 'express-validator'
+import { createProduct } from '../bodySchemas/createProductSchema.js'
+import { cartSchema } from '../bodySchemas/cartSchema.js'
+import { paymentSchema } from '../bodySchemas/paymentSchema.js'
+import { updateProduct } from '../bodySchemas/updateProducts.js'
 import { Product } from '../mongooseSchemas/mongooseCreateProduct.js'
-import bodyValidator from '../Middlewares/bodyValidator.js';
-import idCheck from '../Middlewares/idCheck.js';
+import { Purchase } from '../mongooseSchemas/mongooseCreatePurchase.js'
+import bodyValidator from '../Middlewares/bodyValidator.js'
+import idCheck from '../Middlewares/idCheck.js'
 
 const router = express.Router();
 
@@ -35,7 +38,7 @@ router.post('/products', checkSchema(createProduct), bodyValidator, async (req, 
     const newProduct = new Product(data);
     try{
         await newProduct.save();
-        return res.status(200).json({ message: 'Product added to data base', product: newProduct });
+        return res.status(201).json({ message: 'Product added to data base', product: newProduct });
     } catch(err){
         console.log(err);
         return res.status(500).send('Internal server error');
@@ -44,7 +47,6 @@ router.post('/products', checkSchema(createProduct), bodyValidator, async (req, 
 
 router.patch('/products/:id', checkSchema(updateProduct), bodyValidator, idCheck, async (req, res) => {
     const data = matchedData(req);
-    const productID = req.params.id;
     try{
         const updatedItem = await Product.findByIdAndUpdate(req.params.id, data, { new: true });
         if(!updatedItem) return res.status(404).send('Product not found');
@@ -62,6 +64,75 @@ router.delete('/products/:id', idCheck, async (req, res) => {
         return res.status(200).json({ product: deletedItem });
     } catch(err){
         console.log(err);
+        return res.status(500).send('Internal server error');
+    }
+})
+
+async function parseQuantity(body){
+    const parsedBody = parseInt(body.quantity);
+    return parsedBody;
+}
+
+router.post('/cart', checkSchema(cartSchema), bodyValidator, async (req, res) => {
+    if(!req.user) return res.status(401).send('Please login');
+    const body = matchedData(req);
+    const { cart } = req.session;
+    const ID = req.session.passport;
+    try{
+        const foundItem = await Product.findOne({ item: body.item });
+        if(foundItem === null) return res.status(404).send('Product not found');
+        const parsedBody = await parseQuantity(body);
+        const newItem = { _id: foundItem._id, 
+                          item: foundItem.item, 
+                          price: foundItem.price, 
+                          quantity: parsedBody, 
+                          userID: ID.user };
+        if(cart){
+            cart.push(newItem); // criar uma lógica para impedir que items iguais sejam adicionados no carrinho.
+        } else {
+            req.session.cart = [newItem];
+        }
+        return res.status(200).json({ message: 'Product added to the cart', product: newItem });
+    } catch(err){
+        console.error(err);
+        return res.status(500).send('Internal server error');
+    }
+})
+
+async function getCartTotal(array){
+    let sum = 0;
+    for(let i = 0; i < array.length; i++){
+        const price = array[i].price;
+        const quantity = array[i].quantity;
+        const total = price * quantity;
+        sum += total;
+    }
+    return sum;
+}
+
+async function reduceQuantityInDatabase(array){
+    for(let i = 0; i < array.length; i++){
+        const quantity = array[i].quantity;
+        const findItem = await Product.findById(array[i]._id);
+        const updatedQuantity = { quantity: findItem.quantity - quantity };
+        await Product.findByIdAndUpdate(array[i]._id, updatedQuantity);
+    }
+}
+
+router.post('/cart/payment', checkSchema(paymentSchema), bodyValidator, async (req, res) => {
+    if(!req.user) return res.status(401).send('Please login');
+    const { person, card, currency } = matchedData(req);
+    const cart = req.session.cart;
+    if(!cart) return res.status(400).send('No itens in the cart');
+    try{
+        const total = await getCartTotal(cart);
+        await reduceQuantityInDatabase(cart);
+        const newBuy = { person, card, currency, cart, total }
+        const purchase = new Purchase(newBuy);
+        await purchase.save()
+        return res.status(201).json({ message: 'New purchase made', purchase: purchase });
+    } catch(err){
+        console.error(err);
         return res.status(500).send('Internal server error');
     }
 })
