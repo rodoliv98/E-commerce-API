@@ -90,10 +90,14 @@ const createPurchase = new mongoose.Schema({
         trim: true,
     },
     total: {
-        type: Number,
+        type: String,
         required: [true, 'Total value missing'],
         trim: true,
-    }
+    },
+    date: {
+        type: Date,
+        required: [true, 'Date is missing'],
+    },
 })
 
 export const Purchase = mongoose.model("Purchase", createPurchase);

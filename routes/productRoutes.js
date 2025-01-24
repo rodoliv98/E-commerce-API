@@ -120,6 +120,7 @@ async function getCartTotal(array){
         const total = price * quantity;
         sum += total;
     }
+    sum = sum.toFixed(2, 0);
     return sum;
 }
 
@@ -132,15 +133,29 @@ async function reduceQuantityInDatabase(array){
     }
 }
 
+async function getDate(){
+    const data = new Date();
+    const dia = String(data.getDate()).padStart(2, '0'); 
+    const mes = String(data.getMonth() + 1).padStart(2, '0'); 
+    const ano = data.getFullYear();
+    const horas = String(data.getHours()).padStart(2, '0');
+    const minutos = String(data.getMinutes()).padStart(2, '0');
+    const isoDate = `${ano}-${mes}-${dia}T${horas}:${minutos}:00`;
+    
+    return new Date(isoDate); 
+}
+
 router.post('/cart/payment', checkSchema(paymentSchema), bodyValidator, async (req, res) => {
     if(!req.user) return res.status(401).send('Please login');
     const { person, card, currency } = matchedData(req);
     const cart = req.session.cart;
     if(!cart) return res.status(400).send('No itens in the cart');
     try{
-        const total = await getCartTotal(cart);
+        const result = await getCartTotal(cart);
+        const total = `The total is: ` + result + " " + currency;
         await reduceQuantityInDatabase(cart);
-        const newBuy = { person, card, currency, cart, total }
+        const date = await getDate();
+        const newBuy = { person, card, cart, total, date };
         const purchase = new Purchase(newBuy);
         await purchase.save()
         return res.status(201).json({ message: 'New purchase made', purchase: purchase });
