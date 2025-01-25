@@ -1,5 +1,6 @@
 import express from 'express'
 import { checkSchema, matchedData } from 'express-validator'
+import { parseQuantity, getCartTotal, reduceQuantityInDatabase, getDate } from '../utils/utilFunctions.js'
 import { createProduct } from '../bodySchemas/createProductSchema.js'
 import { cartSchema } from '../bodySchemas/cartSchema.js'
 import { paymentSchema } from '../bodySchemas/paymentSchema.js'
@@ -81,16 +82,10 @@ router.delete('/products/:id', idCheck, async (req, res) => {
     }
 })
 
-async function parseQuantity(body){
-    const parsedBody = parseInt(body.quantity);
-    return parsedBody;
-}
-
 router.post('/cart', checkSchema(cartSchema), bodyValidator, async (req, res) => {
     if(!req.user) return res.status(401).send('Please login');
     const body = matchedData(req);
     const { cart } = req.session;
-    const ID = req.session.passport;
     try{
         const foundItem = await Product.findOne({ item: body.item });
         if(foundItem === null) return res.status(404).send('Product not found');
@@ -98,9 +93,10 @@ router.post('/cart', checkSchema(cartSchema), bodyValidator, async (req, res) =>
         const newItem = { _id: foundItem._id, 
                           item: foundItem.item, 
                           price: foundItem.price, 
-                          quantity: parsedBody, 
-                          userID: ID.user };
+                          quantity: parsedBody };
+        //const duplicateItem = cart.find(product => product.item === body.item);
         if(cart){
+            //if(duplicateItem) return res.status(400).send('nope')
             cart.push(newItem); // criar uma lógica para impedir que items iguais sejam adicionados no carrinho.
         } else {
             req.session.cart = [newItem];
@@ -112,51 +108,19 @@ router.post('/cart', checkSchema(cartSchema), bodyValidator, async (req, res) =>
     }
 })
 
-async function getCartTotal(array){
-    let sum = 0;
-    for(let i = 0; i < array.length; i++){
-        const price = array[i].price;
-        const quantity = array[i].quantity;
-        const total = price * quantity;
-        sum += total;
-    }
-    sum = sum.toFixed(2, 0);
-    return sum;
-}
-
-async function reduceQuantityInDatabase(array){
-    for(let i = 0; i < array.length; i++){
-        const quantity = array[i].quantity;
-        const findItem = await Product.findById(array[i]._id);
-        const updatedQuantity = { quantity: findItem.quantity - quantity };
-        await Product.findByIdAndUpdate(array[i]._id, updatedQuantity);
-    }
-}
-
-async function getDate(){
-    const data = new Date();
-    const dia = String(data.getDate()).padStart(2, '0'); 
-    const mes = String(data.getMonth() + 1).padStart(2, '0'); 
-    const ano = data.getFullYear();
-    const horas = String(data.getHours()).padStart(2, '0');
-    const minutos = String(data.getMinutes()).padStart(2, '0');
-    const isoDate = `${ano}-${mes}-${dia}T${horas}:${minutos}:00`;
-    
-    return new Date(isoDate); 
-}
-
 router.post('/cart/payment', checkSchema(paymentSchema), bodyValidator, async (req, res) => {
     if(!req.user) return res.status(401).send('Please login');
     const { person, card, currency } = matchedData(req);
     const cart = req.session.cart;
+    const ID = req.session.passport;
     if(!cart) return res.status(400).send('No itens in the cart');
     try{
         const result = await getCartTotal(cart);
         const total = `The total is: ` + result + " " + currency;
         await reduceQuantityInDatabase(cart);
         const date = await getDate();
-        const newBuy = { person, card, cart, total, date };
-        const purchase = new Purchase(newBuy);
+        //const newBuy = { person, card, cart, total, date, userID: ID.user };
+        const purchase = new Purchase({ person, card, cart, total, date, userID: ID.user });
         await purchase.save()
         return res.status(201).json({ message: 'New purchase made', purchase: purchase });
     } catch(err){

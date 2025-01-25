@@ -1,0 +1,39 @@
+import { Product } from "../mongooseSchemas/mongooseCreateProduct.js";
+
+export const parseQuantity = async (body) => {
+    const parsedBody = parseInt(body.quantity);
+    return parsedBody;
+}
+
+export const getCartTotal = async (array) => {
+    let sum = 0;
+    for(let i = 0; i < array.length; i++){
+        const price = array[i].price;
+        const quantity = array[i].quantity;
+        const total = price * quantity;
+        sum += total;
+    }
+    sum = sum.toFixed(2, 0);
+    return sum;
+}
+
+export const reduceQuantityInDatabase = async (array) => {
+    for(let i = 0; i < array.length; i++){
+        const quantity = array[i].quantity;
+        const findItem = await Product.findById(array[i]._id);
+        const updatedQuantity = { quantity: findItem.quantity - quantity };
+        await Product.findByIdAndUpdate(array[i]._id, updatedQuantity);
+    }
+}
+
+export const getDate = async () => {
+    const data = new Date();
+    const dia = String(data.getDate()).padStart(2, '0'); 
+    const mes = String(data.getMonth() + 1).padStart(2, '0'); 
+    const ano = data.getFullYear();
+    const horas = String(data.getHours()).padStart(2, '0');
+    const minutos = String(data.getMinutes()).padStart(2, '0');
+    const isoDate = `${ano}-${mes}-${dia}T${horas}:${minutos}:00`;
+    
+    return new Date(isoDate); 
+}

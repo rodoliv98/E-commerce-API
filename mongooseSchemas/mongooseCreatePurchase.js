@@ -17,10 +17,6 @@ const cartSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Quantity is required'],
     },
-    userID: {
-        type: String,
-        required: [true, 'UserID is required']
-    }
 })
 
 const addressSchema = new mongoose.Schema({
@@ -98,6 +94,10 @@ const createPurchase = new mongoose.Schema({
         type: Date,
         required: [true, 'Date is missing'],
     },
+    userID: {
+        type: String,
+        required: [true, 'UserID is required']
+    }
 })
 
 export const Purchase = mongoose.model("Purchase", createPurchase);
