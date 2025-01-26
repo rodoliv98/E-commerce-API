@@ -47,6 +47,12 @@ router.get('/historic', async (req, res) => {
     }
 })
 
+router.get('/cart', (req, res) => {
+    if(!req.session.cart) return res.status(404).send('You have no itens in the cart');
+    const cart = req.session.cart;
+    return res.status(200).json({ cart: cart });
+})
+
 router.post('/products', checkSchema(createProduct), bodyValidator, async (req, res) => {
     const data = matchedData(req);
     const newProduct = new Product(data);
@@ -83,6 +89,41 @@ router.delete('/products/:id', idCheck, async (req, res) => {
 })
 
 router.post('/cart', checkSchema(cartSchema), bodyValidator, async (req, res) => {
+    if(!req.user) return res.status(401).send('Please login first');
+
+    const body = matchedData(req);
+    const cart = req.session.cart || [];
+
+    try{
+        const foundItem = await Product.findOne({ item: body.item });
+        if(!foundItem) return res.status(404).send('Product not found');
+
+        const duplicateItem = cart.find(product => product.item === body.item);
+        if(duplicateItem){
+            const parsedBody = await parseQuantity(body);
+            const index = cart.findIndex(product => product.item === body.item);
+            cart[index].quantity = parsedBody;
+
+            return res.status(200).json({ msg: 'Quantity updated', product: cart[index] });
+        }
+
+        const parsedBody = await parseQuantity(body);
+        const newItem = { _id: foundItem._id,
+                          item: foundItem.item,
+                          price: foundItem.price,
+                          quantity: parsedBody }
+
+        cart.push(newItem);
+        req.session.cart = cart;
+
+        return res.status(200).json({ msg: 'Product added to the cart', product: newItem });
+    } catch(err){
+        console.error(err);
+        return res.status(500).json({ msg: 'Internal server error', details: err.message });
+    }
+})
+
+/*router.post('/cart', checkSchema(cartSchema), bodyValidator, async (req, res) => {
     if(!req.user) return res.status(401).send('Please login');
     const body = matchedData(req);
     const { cart } = req.session;
@@ -106,7 +147,7 @@ router.post('/cart', checkSchema(cartSchema), bodyValidator, async (req, res) =>
         console.error(err);
         return res.status(500).send('Internal server error');
     }
-})
+})*/
 
 router.post('/cart/payment', checkSchema(paymentSchema), bodyValidator, async (req, res) => {
     if(!req.user) return res.status(401).send('Please login');
@@ -119,7 +160,6 @@ router.post('/cart/payment', checkSchema(paymentSchema), bodyValidator, async (r
         const total = `The total is: ` + result + " " + currency;
         await reduceQuantityInDatabase(cart);
         const date = await getDate();
-        //const newBuy = { person, card, cart, total, date, userID: ID.user };
         const purchase = new Purchase({ person, card, cart, total, date, userID: ID.user });
         await purchase.save()
         return res.status(201).json({ message: 'New purchase made', purchase: purchase });
