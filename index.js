@@ -3,8 +3,11 @@ import express from 'express'
 import session from 'express-session';
 import mongoose from 'mongoose';
 import passport from 'passport';
+import registerRoutes from './routes/register.js'
 import loginRoutes from './routes/login.js'
 import productRoutes from './routes/productRoutes.js'
+import cartRoutes from './routes/cart.js'
+import historicRoutes from './routes/historic.js'
 import 'dotenv/config'
 
 const app = express();
@@ -27,8 +30,11 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use('/', loginRoutes)
-app.use('/', productRoutes)
+app.use('/register', registerRoutes)
+app.use('/login', loginRoutes)
+app.use('/products', productRoutes)
+app.use('/cart', cartRoutes)
+app.use('/historic', historicRoutes)
 
 
 app.listen(3000, () => console.log('Server running on localhost:3000/'));
