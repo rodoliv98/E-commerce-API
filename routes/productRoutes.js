@@ -12,7 +12,7 @@ import idCheck from '../Middlewares/idCheck.js'
 
 const router = express.Router();
 
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
     try{
         const findItens = await Product.find();
         if(!findItens) return res.status(404).send('Couldnt find any product');
@@ -23,7 +23,7 @@ router.get('/products', async (req, res) => {
     }
 })
 
-router.get('/products/:id', idCheck, async (req, res) => {
+router.get('/:id', idCheck, async (req, res) => {
     try{
         const findItens = await Product.findOne({ _id: req.params.id });
         if(!findItens) return res.status(404).send('Product not found');
@@ -47,25 +47,19 @@ router.get('/historic', async (req, res) => {
     }
 })
 
-router.get('/cart', (req, res) => {
-    if(!req.session.cart) return res.status(404).send('You have no itens in the cart');
-    const cart = req.session.cart;
-    return res.status(200).json({ cart: cart });
-})
-
-router.post('/products', checkSchema(createProduct), bodyValidator, async (req, res) => {
+router.post('/', checkSchema(createProduct), bodyValidator, async (req, res) => {
     const data = matchedData(req);
     const newProduct = new Product(data);
     try{
         await newProduct.save();
-        return res.status(201).json({ message: 'Product added to data base', product: newProduct });
+        return res.status(201).json({ msg: 'Product added to data base', product: newProduct });
     } catch(err){
         console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 })
 
-router.patch('/products/:id', checkSchema(updateProduct), bodyValidator, idCheck, async (req, res) => {
+router.patch('/:id', checkSchema(updateProduct), bodyValidator, idCheck, async (req, res) => {
     const data = matchedData(req);
     try{
         const updatedItem = await Product.findByIdAndUpdate(req.params.id, data, { new: true });
@@ -77,67 +71,11 @@ router.patch('/products/:id', checkSchema(updateProduct), bodyValidator, idCheck
     }
 })
 
-router.delete('/products/:id', idCheck, async (req, res) => {
+router.delete('/:id', idCheck, async (req, res) => {
     try{
         const deletedItem = await Product.findByIdAndDelete({ _id: req.params.id });
         if(!deletedItem) return res.status(404).send('Product not found');
-        return res.status(200).json({ product: deletedItem });
-    } catch(err){
-        console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message });
-    }
-})
-
-router.post('/cart', checkSchema(cartSchema), bodyValidator, async (req, res) => {
-    if(!req.user) return res.status(401).send('Please login first');
-
-    const body = matchedData(req);
-    const cart = req.session.cart || [];
-
-    try{
-        const foundItem = await Product.findOne({ item: body.item });
-        if(!foundItem) return res.status(404).send('Product not found');
-
-        const duplicateItem = cart.find(product => product.item === body.item);
-        if(duplicateItem){
-            const parsedBody = await parseQuantity(body);
-            const index = cart.findIndex(product => product.item === body.item);
-            cart[index].quantity = parsedBody;
-
-            return res.status(200).json({ msg: 'Quantity updated', product: cart[index] });
-        }
-
-        const parsedBody = await parseQuantity(body);
-        const newItem = { _id: foundItem._id,
-                          item: foundItem.item,
-                          price: foundItem.price,
-                          quantity: parsedBody }
-
-        cart.push(newItem);
-        req.session.cart = cart;
-
-        return res.status(200).json({ msg: 'Product added to the cart', product: newItem });
-    } catch(err){
-        console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message });
-    }
-})
-
-router.post('/cart/payment', checkSchema(paymentSchema), bodyValidator, async (req, res) => {
-    if(!req.user) return res.status(401).send('Please login');
-    const { person, card, currency } = matchedData(req);
-    const cart = req.session.cart;
-    const ID = req.session.passport;
-    if(!cart) return res.status(400).send('No itens in the cart');
-    try{
-        const result = await getCartTotal(cart);
-        const total = `The total is: ` + result + " " + currency;
-        await reduceQuantityInDatabase(cart);
-        const date = await getDate();
-        const purchase = new Purchase({ person, card, cart, total, date, userID: ID.user });
-        await purchase.save();
-        req.session.cart = [];
-        return res.status(201).json({ message: 'New purchase made', purchase: purchase });
+        return res.status(200).json({ msg: 'Product deleted from data base', product: deletedItem });
     } catch(err){
         console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
