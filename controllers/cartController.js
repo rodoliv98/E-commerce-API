@@ -1,7 +1,6 @@
-import { Product } from "../mongooseSchemas/mongooseCreateProduct.js"
 import { Purchase } from '../mongooseSchemas/mongooseCreatePurchase.js'
 import { matchedData } from "express-validator";
-import { parseQuantity, getCartTotal, reduceQuantityInDatabase, getDate } from '../utils/utilFunctions.js'
+import { parseQuantity, getCartTotal, reduceQuantityInDatabase, getDate, compareQuantity } from '../utils/utilFunctions.js'
 
 export const showCart = async (req, res) => {
     if(!req.session.cart) return res.status(404).send('You have no itens in the cart');
@@ -15,9 +14,9 @@ export const addProductToTheCart = async (req, res) => {
     const body = matchedData(req);
     const cart = req.session.cart || [];
     
+    if(cart.length >= 11) return res.status(400).send('Cart is already full');
     try{
-        const foundItem = await Product.findOne({ item: body.item });
-        if(!foundItem) return res.status(404).send('Product not found');
+        const foundItem = await compareQuantity(body);
     
         const duplicateItem = cart.find(product => product.item === body.item);
         if(duplicateItem){
@@ -64,3 +63,16 @@ export const createPurchase = async (req, res) => {
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
+
+// vindo da requisição, devo pegar a quantidade dos itens que estao sendo colocados no carrinho
+// devo encontrar o item que foi colocado no carrinho no banco de dados
+// devo comparar a quantidade dos dois
+// se a quantidade que estiver no carrinho for maior que a quantidade do banco de dados devo retornar um erro
+/*
+    async function compareQuantity(body){
+        const foundItem = await Product.find({ item: body.item });
+        if(!foundItem) return res.status(404).send('No product found');
+        if(foundItem.quantity === body.quantity) return res.status(400).send('Out of stock');
+        return foundItem;
+    }
+*/
