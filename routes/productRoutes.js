@@ -135,7 +135,8 @@ router.post('/cart/payment', checkSchema(paymentSchema), bodyValidator, async (r
         await reduceQuantityInDatabase(cart);
         const date = await getDate();
         const purchase = new Purchase({ person, card, cart, total, date, userID: ID.user });
-        await purchase.save()
+        await purchase.save();
+        req.session.cart = [];
         return res.status(201).json({ message: 'New purchase made', purchase: purchase });
     } catch(err){
         console.error(err);
