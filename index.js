@@ -3,6 +3,7 @@ import express from 'express'
 import session from 'express-session';
 import mongoose from 'mongoose';
 import passport from 'passport';
+import registerRoutes from './routes/register.js'
 import loginRoutes from './routes/login.js'
 import productRoutes from './routes/productRoutes.js'
 import 'dotenv/config'
@@ -27,7 +28,8 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use('/', loginRoutes)
+app.use('/register', registerRoutes)
+app.use('/login', loginRoutes)
 app.use('/', productRoutes)
 
 
