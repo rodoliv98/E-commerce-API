@@ -1,12 +1,9 @@
 import express from 'express'
 import bodyValidator from '../Middlewares/bodyValidator.js'
-import { checkSchema, matchedData } from 'express-validator'
-import { Product } from '../mongooseSchemas/mongooseCreateProduct.js'
-import { Purchase } from '../mongooseSchemas/mongooseCreatePurchase.js'
+import { checkSchema } from 'express-validator'
 import { cartSchema } from '../bodySchemas/cartSchema.js'
 import { paymentSchema } from '../bodySchemas/paymentSchema.js'
 import { showCart, addProductToTheCart, createPurchase } from '../controllers/cartController.js'
-import { parseQuantity, getCartTotal, reduceQuantityInDatabase, getDate } from '../utils/utilFunctions.js'
 
 const router = express.Router();
 
