@@ -5,15 +5,19 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import loginRoutes from './routes/login.js'
 import productRoutes from './routes/productRoutes.js'
+import 'dotenv/config'
 
 const app = express();
 
+const MONGO_URI = process.env.MONGO_URI
+const SESSION_SECRET = process.env.SESSION_SECRET
+
 app.use(express.json());
-mongoose.connect("mongodb+srv://rdgoliv18:NuPuTOJD5V22VaW3@users.oybab.mongodb.net/users?retryWrites=true&w=majority&appName=users")
+mongoose.connect(MONGO_URI)
         .then(() => console.log('Connected to database'))
         .catch((err) => console.log(err))
 app.use(session({
-    secret: "c53890169c8a100d6b7f24e8cd059f63db0794f9586e96e82ddfef08f026cd6d",
+    secret: SESSION_SECRET,
     saveUninitialized: false,
     resave: false,
     cookie: { maxAge: 60000 * 60 },
