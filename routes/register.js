@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyValidator from '../Middlewares/bodyValidator.js'
-import { checkSchema, matchedData } from 'express-validator'
+import { checkSchema } from 'express-validator'
 import { createUserSchema } from '../bodySchemas/createUserSchema.js'
 import { createAccount } from '../controllers/registerController.js'
 
