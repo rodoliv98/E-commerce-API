@@ -37,3 +37,10 @@ export const getDate = async () => {
     
     return new Date(isoDate); 
 }
+
+export const compareQuantity = async (body) => { 
+    const foundItem = await Product.findOne({ item: body.item });
+    if(!foundItem) throw new Error('No product has been found');
+    if(foundItem.quantity < body.quantity) throw new Error('Out of stock');
+    return foundItem;
+}
