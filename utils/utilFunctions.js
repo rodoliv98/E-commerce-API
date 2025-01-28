@@ -44,3 +44,13 @@ export const compareQuantity = async (body) => {
     if(foundItem.quantity < body.quantity) throw new Error('Out of stock');
     return foundItem;
 }
+
+export const createOrder = async (person, card, currency, cart, ID) => {
+        const getTotal = await getCartTotal(cart);
+        const total = `The total is: ` + getTotal + " " + currency;
+        await reduceQuantityInDatabase(cart);
+        const date = await getDate();
+        const newOrder = { person, card, cart, total, date, userID: ID.user };
+        
+        return newOrder;
+}
