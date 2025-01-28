@@ -4,15 +4,12 @@ import { User } from '../mongooseSchemas/mongooseCreateUser.js'
 import { Strategy } from "passport-local"
 
 passport.serializeUser((user, done) => {
-    console.log('Inside serializer')
     done(null, user.id);
 })
 
 passport.deserializeUser( async (id, done) => {
     try{
-        console.log('inside DEserializer')
         const findUser = await User.findById(id);
-        console.log(findUser);
         if(!findUser) throw new Error('User not found');
         done(null, findUser);
     } catch(err){
