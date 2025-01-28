@@ -1,6 +1,6 @@
 import { Purchase } from '../mongooseSchemas/mongooseCreatePurchase.js'
 import { matchedData } from "express-validator";
-import { parseQuantity, getCartTotal, reduceQuantityInDatabase, getDate, compareQuantity } from '../utils/utilFunctions.js'
+import { parseQuantity, compareQuantity, createOrder } from '../utils/utilFunctions.js'
 
 export const showCart = async (req, res) => {
     if(!req.session.cart) return res.status(404).send('You have no itens in the cart');
@@ -50,11 +50,8 @@ export const createPurchase = async (req, res) => {
     const ID = req.session.passport;
     if(!cart) return res.status(400).send('No itens in the cart');
     try{
-        const result = await getCartTotal(cart);
-        const total = `The total is: ` + result + " " + currency;
-        await reduceQuantityInDatabase(cart);
-        const date = await getDate();
-        const purchase = new Purchase({ person, card, cart, total, date, userID: ID.user });
+        const newOrder = await createOrder(person, card, currency, cart, ID);
+        const purchase = new Purchase(newOrder);
         await purchase.save();
         req.session.cart = [];
         return res.status(201).json({ message: 'New purchase made', purchase: purchase });
@@ -63,16 +60,3 @@ export const createPurchase = async (req, res) => {
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
-
-// vindo da requisição, devo pegar a quantidade dos itens que estao sendo colocados no carrinho
-// devo encontrar o item que foi colocado no carrinho no banco de dados
-// devo comparar a quantidade dos dois
-// se a quantidade que estiver no carrinho for maior que a quantidade do banco de dados devo retornar um erro
-/*
-    async function compareQuantity(body){
-        const foundItem = await Product.find({ item: body.item });
-        if(!foundItem) return res.status(404).send('No product found');
-        if(foundItem.quantity === body.quantity) return res.status(400).send('Out of stock');
-        return foundItem;
-    }
-*/
