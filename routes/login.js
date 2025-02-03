@@ -1,7 +1,7 @@
 import express from 'express'
 import passport from 'passport'
 import { checkSchema } from 'express-validator'
-import { userLogin } from '../bodySchemas/userLoginSchema.js'
+import { userLogin } from '../Schemas/bodySchemas/userLoginSchema.js'
 import bodyValidator from '../Middlewares/bodyValidator.js'
 import '../passportStrats/localStrat.js'
 
