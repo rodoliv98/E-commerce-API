@@ -38,7 +38,7 @@ export const addProductToTheCart = async (req, res) => {
     
         return res.status(200).json({ msg: 'Product added to the cart', product: newItem });
     } catch(err){
-        console.error(err);
+        console.error(err.message);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
@@ -56,7 +56,7 @@ export const createPurchase = async (req, res) => {
         req.session.cart = [];
         return res.status(201).json({ message: 'New purchase made', purchase: purchase });
     } catch(err){
-        console.error(err);
+        console.error(err.message);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }

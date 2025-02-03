@@ -13,8 +13,6 @@ export const createAccount = async (req, res) => {
         const hashedPassword = await bcrypt.hash(data.password, 10);
         const newUser = new User({ ...data, password: hashedPassword });
         await newUser.save();
-        console.log(newUser._id)
-        console.log(typeof(newUser._id))
         const token = generateEmailToken(newUser._id);
         await sendVerificationEmail(data.email, token);
 
@@ -35,4 +33,9 @@ export const verifyEmail = async (req, res) => {
         console.error(err.message);
         return res.status(400).json({ msg: 'Token either invalid or expired', details: err.message });
     }
+}
+
+export const reSendEmailToken = async (req, res) => {
+    const data = req;
+    console.log(req)
 }
