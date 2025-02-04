@@ -4,12 +4,13 @@ import { parseQuantity, compareQuantity, createOrder } from '../utils/utilFuncti
 
 export const showCart = async (req, res) => {
     if(!req.session.cart) return res.status(404).send('You have no itens in the cart');
+    console.log(req.user)
     const cart = req.session.cart;
     return res.status(200).json({ cart: cart });
 }
 
 export const addProductToTheCart = async (req, res) => {
-    if(!req.user) return res.status(401).send('Please login first');
+    if(!req.user) return res.status(401).send('Please login');
     
     const body = matchedData(req);
     const cart = req.session.cart || [];
@@ -38,7 +39,7 @@ export const addProductToTheCart = async (req, res) => {
     
         return res.status(200).json({ msg: 'Product added to the cart', product: newItem });
     } catch(err){
-        console.error(err);
+        console.error(err.message);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
@@ -56,7 +57,7 @@ export const createPurchase = async (req, res) => {
         req.session.cart = [];
         return res.status(201).json({ message: 'New purchase made', purchase: purchase });
     } catch(err){
-        console.error(err);
+        console.error(err.message);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }

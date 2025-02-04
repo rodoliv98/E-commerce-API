@@ -8,7 +8,7 @@ export const showHistoric = async (req, res) => {
         if(showBuys.length === 0) return res.status(404).send('No historic');
         return res.status(200).json({ historic: showBuys });
     } catch(err){
-        console.error(err);
+        console.error(err.message);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }

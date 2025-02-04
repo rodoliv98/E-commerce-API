@@ -1,4 +1,6 @@
-import { Product } from "../mongooseSchemas/mongooseCreateProduct.js";
+import { Product } from "../mongooseSchemas/mongooseCreateProduct.js"
+import { generateEmailToken } from '../nodeMailer/tokenService.js'
+import { sendVerificationEmail } from '../nodeMailer/emailService.js'
 
 export const parseQuantity = async (body) => {
     const parsedBody = parseInt(body.quantity);
@@ -53,4 +55,9 @@ export const createOrder = async (person, card, currency, cart, ID) => {
         const newOrder = { person, card, cart, total, date, userID: ID.user };
         
         return newOrder;
+}
+
+export const reSendEmailToken = async (id, email) => {
+    const token = generateEmailToken(id);
+    await sendVerificationEmail(email, token);
 }

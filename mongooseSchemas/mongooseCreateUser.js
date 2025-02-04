@@ -21,6 +21,10 @@ const createMongoUserModel = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+    },
+    emailVerified: {
+        type: Boolean,
+        default: false
     }
 })
 
