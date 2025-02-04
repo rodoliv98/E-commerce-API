@@ -48,13 +48,13 @@ export const compareQuantity = async (body) => {
 }
 
 export const createOrder = async (person, card, currency, cart, ID) => {
-        const getTotal = await getCartTotal(cart);
-        const total = `The total is: ` + getTotal + " " + currency;
-        await reduceQuantityInDatabase(cart);
-        const date = await getDate();
-        const newOrder = { person, card, cart, total, date, userID: ID.user };
+    const getTotal = await getCartTotal(cart);
+    const total = `The total is: ` + getTotal + " " + currency;
+    await reduceQuantityInDatabase(cart);
+    const date = await getDate();
+    const newOrder = { person, card, cart, total, date, userID: ID.user };
         
-        return newOrder;
+    return newOrder;
 }
 
 export const reSendEmailToken = async (id, email) => {
