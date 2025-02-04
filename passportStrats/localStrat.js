@@ -2,6 +2,7 @@ import passport from "passport"
 import bcrypt from 'bcrypt'
 import { User } from '../mongooseSchemas/mongooseCreateUser.js'
 import { Strategy } from "passport-local"
+import { reSendEmailToken } from "../utils/utilFunctions.js"
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -24,6 +25,10 @@ export default passport.use(
             if(!findUser) throw new Error('User not found');
             const isMatch = await bcrypt.compare(password, findUser.password);
             if(!isMatch) throw new Error('Invalid password');
+            if(findUser.emailVerified == false){
+                await reSendEmailToken(findUser._id, email);
+                throw new Error('Email has not been verified');
+            }
             done(null, findUser);   
         } catch(err){
             done(err, null);

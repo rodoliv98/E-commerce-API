@@ -18,7 +18,7 @@ export const createAccount = async (req, res) => {
 
         return res.status(201).send('Account created');
     } catch(err){
-        console.log(err);
+        console.log(err.message);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
@@ -33,9 +33,4 @@ export const verifyEmail = async (req, res) => {
         console.error(err.message);
         return res.status(400).json({ msg: 'Token either invalid or expired', details: err.message });
     }
-}
-
-export const reSendEmailToken = async (req, res) => {
-    const data = req;
-    console.log(req)
 }

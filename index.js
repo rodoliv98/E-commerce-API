@@ -18,7 +18,7 @@ const SESSION_SECRET = process.env.SESSION_SECRET
 app.use(express.json());
 mongoose.connect(MONGO_URI)
         .then(() => console.log('Connected to database'))
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err.message))
 app.use(session({
     secret: SESSION_SECRET,
     saveUninitialized: false,
