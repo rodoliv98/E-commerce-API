@@ -4,14 +4,11 @@ import { parseQuantity, compareQuantity, createOrder } from '../utils/utilFuncti
 
 export const showCart = async (req, res) => {
     if(!req.session.cart) return res.status(404).send('You have no itens in the cart');
-    console.log(req.user)
     const cart = req.session.cart;
     return res.status(200).json({ cart: cart });
 }
 
-export const addProductToTheCart = async (req, res) => {
-    if(!req.user) return res.status(401).send('Please login');
-    
+export const addProductToTheCart = async (req, res) => {  
     const body = matchedData(req);
     const cart = req.session.cart || [];
     
@@ -44,8 +41,16 @@ export const addProductToTheCart = async (req, res) => {
     }
 }
 
+export const deleteProductFromTheCart = async (req, res) => { //finish tomorrow
+    const data = matchedData(req);
+    const cart = req.session.cart;
+    const foundItem = cart.findIndex(product => product.item === data.item);
+    if(foundItem === -1) return res.sendStatus(404);
+    if(foundItem > -1) cart.splice(foundItem, 1);
+    return res.status(200).json({ cart })
+}
+
 export const createPurchase = async (req, res) => {
-    if(!req.user) return res.status(401).send('Please login');
     const { person, card, currency } = matchedData(req);
     const cart = req.session.cart;
     const ID = req.session.passport;
