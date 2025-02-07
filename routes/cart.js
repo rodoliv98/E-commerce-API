@@ -9,7 +9,7 @@ import { deleteProductSchema } from '../Schemas/bodySchemas/deleteCartProductSch
 
 const router = express.Router();
 
-router.get('/', showCart)
+router.get('/', checkLogin, showCart)
 
 router.post('/', checkSchema(cartSchema), bodyValidator, checkLogin, addProductToTheCart)
 
