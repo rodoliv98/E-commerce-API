@@ -18,7 +18,7 @@ export const createAccount = async (req, res) => {
 
         return res.status(201).send('Account created');
     } catch(err){
-        console.log(err.message);
+        console.log(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
@@ -30,7 +30,7 @@ export const verifyEmail = async (req, res) => {
         await User.findByIdAndUpdate(decoded.userId, { emailVerified: true });
         return res.status(200).send('Email verified!');
     } catch(err){
-        console.error(err.message);
+        console.error(err);
         return res.status(400).json({ msg: 'Token either invalid or expired', details: err.message });
     }
 }

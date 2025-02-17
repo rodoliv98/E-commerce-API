@@ -41,7 +41,7 @@ export const addProductToTheCart = async (req, res) => {
     }
 }
 
-export const deleteProductFromTheCart = async (req, res) => { //finish tomorrow
+export const deleteProductFromTheCart = async (req, res) => {
     const data = matchedData(req);
     const cart = req.session.cart;
     const foundItem = cart.findIndex(product => product.item === data.item);

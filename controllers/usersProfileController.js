@@ -10,7 +10,7 @@ export const showUser = async (req, res) => {
         if(!findUser) return res.status(404).send('No user found');
         return res.status(200).json({ msg: `Hello ${findUser.firstName}!`, email: findUser.email })
     } catch(err){
-        console.error(err.message);
+        console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
@@ -22,7 +22,7 @@ export const showProfile = async (req, res) => {
         if(!findProfile) return res.status(404).send('Not found');
         return res.status(200).json({ findProfile });
     } catch(err){
-        console.error(err.message);
+        console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
@@ -35,7 +35,7 @@ export const createProfile = async (req, res) => {
         await newProfile.save();
         return res.status(200).json({ msg: 'Profile created', details: newProfile });
     } catch(err){
-        console.error(err.message);
+        console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
@@ -47,7 +47,7 @@ export const patchProfile = async (req, res) => {
         const updatedProfile = await Profile.findOneAndUpdate({ userID: ID }, data, { new: true });
         return res.status(200).json({ msg: 'Profile updated', details: updatedProfile })
     } catch(err){
-        console.error(err.message);
+        console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
@@ -59,7 +59,7 @@ export const showHistoric = async (req, res) => {
         if(showBuys.length === 0) return res.status(404).send('No historic');
         return res.status(200).json({ historic: showBuys });
     } catch(err){
-        console.error(err.message);
+        console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
     }
 }
