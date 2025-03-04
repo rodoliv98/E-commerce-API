@@ -22,3 +22,14 @@ export const sendVerificationEmail = async (userEmail, token) => {
         html: `<p>Click to verify your email: <a href="${verificationLink}">${verificationLink}</a></p>`,
     })
 }
+
+export const sendPasswordRecoveryEmail = async (userEmail, token) => {
+    const verificationLink = `http://localhost:3000/register/change-password?token=${token}`;
+
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: userEmail,
+        subject: `Password recovery`,
+        html: `<p>Click to change to a new password: <a href="${verificationLink}">${verificationLink}</a></p>`,
+    })
+}
