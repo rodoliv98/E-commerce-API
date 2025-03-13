@@ -27,8 +27,8 @@ export default passport.use(
             if(!isMatch) throw new Error('Invalid password');
             if(findUser.emailVerified == false){
                 await reSendEmailToken(findUser._id, email);
-                throw new Error('Email has not been verified');
             }
+            
             done(null, findUser);   
         } catch(err){
             done(err, null);

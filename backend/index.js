@@ -1,6 +1,7 @@
 import MongoStore from 'connect-mongo';
 import express from 'express'
 import session from 'express-session';
+import cors from 'cors'
 import mongoose from 'mongoose';
 import passport from 'passport';
 import registerRoutes from './routes/register.js'
@@ -13,10 +14,17 @@ import { client } from './controllers/productController.js'
 
 const app = express();
 
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
 const MONGO_URI = process.env.MONGO_URI
 const SESSION_SECRET = process.env.SESSION_SECRET
 
 app.use(express.json());
+app.use(cors(corsOptions))
 mongoose.connect(MONGO_URI)
         .then(() => console.log('Connected to database'))
         .catch((err) => console.log(err.message))

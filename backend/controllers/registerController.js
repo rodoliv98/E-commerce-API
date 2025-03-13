@@ -39,7 +39,7 @@ export const recoverPassword = async (req, res) => {
     const data = matchedData(req);
     try{
         const findUser = await User.findOne({ email: data.email });
-        if(!findUser) return res.sendStatus(404);
+        if(!findUser) return res.status(404).send('No accounts found with this email');
 
         const token = generateEmailToken(findUser._id);
         await sendPasswordRecoveryEmail(data.email, token);
@@ -58,10 +58,10 @@ export const newPassword = async (req, res) => {
         const decoded = verifyEmailToken(token);
         const newPassword = await bcrypt.hash(data.password, 10);
         await User.findByIdAndUpdate(decoded.userId, { password: newPassword });
-        return res.status(200).send('Your password has been changed!');
+        return res.status(200).send('Password changed!');
     } catch(err){
         console.error(err);
-        return res.status(500).json({ details: err.message })
+        return res.status(500).json(err.message)
     }
 }
 
