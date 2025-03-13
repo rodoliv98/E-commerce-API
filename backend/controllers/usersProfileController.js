@@ -8,7 +8,7 @@ export const showUser = async (req, res) => {
     try{
         const findUser = await User.findOne({ _id: ID })
         if(!findUser) return res.status(404).send('No user found');
-        return res.status(200).json({ msg: `Hello ${findUser.firstName}!`, email: findUser.email })
+        return res.status(200).json({ msg: `Welcome, ${findUser.firstName}!`, email: findUser.email })
     } catch(err){
         console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
