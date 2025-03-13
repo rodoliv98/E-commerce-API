@@ -10,6 +10,7 @@ import Register from './pages/Register'
 import Purchases from './pages/Purchases'
 import Recovery from './pages/Recovery'
 import ChangePassword from './pages/ChangePassword'
+import EmailConfirmed from './pages/EmailConfirmed'
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: '/my-orders',
     element: <Purchases />,
+  },
+  {
+    path: '/verify-email',
+    element: <EmailConfirmed />,
   }
 ])
 

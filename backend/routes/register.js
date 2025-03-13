@@ -15,7 +15,7 @@ router.post('/recovery-password', checkSchema(emailForRecovery), bodyValidator, 
 
 router.post('/new-password', checkSchema(passwordChange), bodyValidator, newPassword)
 
-router.get('/verify-email', checkSchema(tokenSchema), bodyValidator, verifyEmail)
+router.post('/verify-email', checkSchema(tokenSchema), bodyValidator, verifyEmail)
 
 router.get('/change-password', test1)
 

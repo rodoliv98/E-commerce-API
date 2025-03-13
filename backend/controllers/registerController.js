@@ -28,7 +28,7 @@ export const verifyEmail = async (req, res) => {
     try{
         const decoded = verifyEmailToken(token);
         await User.findByIdAndUpdate(decoded.userId, { emailVerified: true });
-        return res.status(200).send('Email verified!');
+        return res.status(200).send('Your email has been verified!');
     } catch(err){
         console.error(err);
         return res.status(400).json({ msg: 'Token either invalid or expired', details: err.message });
