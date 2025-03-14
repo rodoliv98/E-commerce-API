@@ -64,7 +64,3 @@ export const newPassword = async (req, res) => {
         return res.status(500).json(err.message)
     }
 }
-
-export const test1 = async (req, res) => {
-    return res.status(200).send('insert new password')
-}

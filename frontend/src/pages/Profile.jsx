@@ -50,6 +50,9 @@ const Profile = () => {
                         <Link to='/profile-data' className="bg-green-500 text-white p-2 rounded hover:bg-green-600 active:bg-green-700">
                             Profile Data
                         </Link>
+                        <Link to='/profile-address' className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 active:bg-blue-700">
+                            Addresses
+                        </Link>
                     </div>
                 </div>
             )}
