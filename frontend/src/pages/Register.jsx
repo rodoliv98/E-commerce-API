@@ -40,9 +40,10 @@ const Register = () => {
                 <h2 className="text-2xl font-bold text-center text-white">Register</h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-white">First Name:</label>
+                        <label htmlFor="firstName" className="block text-sm font-medium text-white">First Name:</label>
                         <input
                             type="text"
+                            id="firstName"
                             name="firstName"
                             value={formData.firstName || ''}
                             onChange={handleChange}
@@ -51,9 +52,10 @@ const Register = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-white">Last Name:</label>
+                        <label htmlFor="lastName" className="block text-sm font-medium text-white">Last Name:</label>
                         <input
                             type="text"
+                            id="lastName"
                             name="lastName"
                             value={formData.lastName || ''}
                             onChange={handleChange}
@@ -62,9 +64,10 @@ const Register = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-white">Email:</label>
+                        <label htmlFor="email" className="block text-sm font-medium text-white">Email:</label>
                         <input
                             type="email"
+                            id="email"
                             name="email"
                             value={formData.email || ''}
                             onChange={handleChange}
@@ -73,9 +76,10 @@ const Register = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-white">Password:</label>
+                        <label htmlFor="password" className="block text-sm font-medium text-white">Password:</label>
                         <input
                             type="password"
+                            id="password"
                             name="password"
                             value={formData.password || ''}
                             onChange={handleChange}
@@ -93,4 +97,4 @@ const Register = () => {
     );
 };
 
-export default Register
+export default Register;

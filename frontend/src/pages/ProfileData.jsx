@@ -62,9 +62,10 @@ const ProfileData = () => {
             </div>
             <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <div className="mb-4">
-                    <label className="block text-white mb-2">Name:</label>
+                    <label htmlFor='name' className="block text-white mb-2">Name:</label>
                     <input
                         type="text"
+                        id='name'
                         name="fullName"
                         value={profile.fullName}
                         onChange={handleChange}
@@ -72,9 +73,10 @@ const ProfileData = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-white mb-2">Birthdate:</label>
+                    <label htmlFor='birthDate' className="block text-white mb-2">Birthdate:</label>
                     <input
                         type="text"
+                        id='birthDate'
                         name="birthDate"
                         value={profile.birthDate}
                         onChange={handleChange}
@@ -82,9 +84,10 @@ const ProfileData = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-white mb-2">CPF:</label>
+                    <label htmlFor='cpf' className="block text-white mb-2">CPF:</label>
                     <input
                         type="text"
+                        id='cpf'
                         name="cpf"
                         value={profile.cpf}
                         onChange={handleChange}

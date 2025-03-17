@@ -17,9 +17,7 @@ const ChangePassword = () => {
         try {
             const response = await axios.post(`http://localhost:3000/register/new-password?token=${token}`, { password });
             setMessage(response.data);
-            console.log(response);
         } catch (error) {
-            console.error(error);
             setMessage('Error changing password');
         }
     };

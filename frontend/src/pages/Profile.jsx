@@ -41,7 +41,7 @@ const Profile = () => {
             </div>
             {userData && (
                 <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                    <h2 className="text-2xl font-bold text-white mb-4">{userData.msg}</h2>
+                    <h2 className="text-2xl font-bold text-white mb-4">Welcome, {userData.msg}!</h2>
                     <p className="text-gray-400 mb-4">Email: {userData.email}</p>
                     <div className="flex space-x-4">
                         <Link to='/my-orders' className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 active:bg-blue-700">

@@ -19,7 +19,7 @@ const Addresses = () => {
                 const response = await axios.get('http://localhost:3000/user/address');
                 setAddresses(response.data);
             } catch (error) {
-                console.error(error);
+                setError('There was an error. Please try again.');
             }
         };
         fetchAddresses();
@@ -64,9 +64,8 @@ const Addresses = () => {
         try {
             const address = addresses[index];
             await axios.patch(`http://localhost:3000/user/address/${address.id}`, address);
-            console.log('Address updated successfully');
         } catch (error) {
-            console.error('There was an error updating the address!', error);
+            setError('There was an error updating the address. Please try again.');
         }
     };
 
@@ -75,9 +74,8 @@ const Addresses = () => {
             const address = addresses[index];
             await axios.delete(`http://localhost:3000/user/address/${address._id}`);
             setAddresses(addresses.filter((_, i) => i !== index));
-            console.log('Address deleted successfully');
         } catch (error) {
-            console.error('There was an error deleting the address!', error);
+            setError('There was an error deleting the address. Please try again.');
         }
     };
 
