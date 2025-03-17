@@ -10,6 +10,9 @@ import Register from './pages/Register'
 import Purchases from './pages/Purchases'
 import Recovery from './pages/Recovery'
 import ChangePassword from './pages/ChangePassword'
+import EmailConfirmed from './pages/EmailConfirmed'
+import Addresses from './pages/Addresses'
+import Cart from './pages/Cart'
 
 const router = createBrowserRouter([
   {
@@ -43,6 +46,18 @@ const router = createBrowserRouter([
   {
     path: '/my-orders',
     element: <Purchases />,
+  },
+  {
+    path: '/verify-email',
+    element: <EmailConfirmed />,
+  },
+  {
+    path: '/profile-address',
+    element: <Addresses />,
+  },
+  {
+    path: '/cart',
+    element: <Cart />,
   }
 ])
 

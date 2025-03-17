@@ -16,7 +16,6 @@ const Login = () => {
         redirectUser('/');
       }
     } catch (err) {
-      console.error(err);
       setError(err.response.data);
     }
   };

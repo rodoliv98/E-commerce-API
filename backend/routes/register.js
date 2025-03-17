@@ -5,7 +5,7 @@ import { createUserSchema } from '../Schemas/bodySchemas/createUserSchema.js'
 import { emailForRecovery } from '../Schemas/bodySchemas/emailSchemaForRecovery.js'
 import { passwordChange } from '../Schemas/bodySchemas/passwordChangeSchema.js'
 import { tokenSchema } from '../Schemas/querySchemas/verifyTokenSchema.js'
-import { createAccount, newPassword, recoverPassword, test1, verifyEmail } from '../controllers/registerController.js'
+import { createAccount, newPassword, recoverPassword, verifyEmail } from '../controllers/registerController.js'
 
 const router = express.Router();
 
@@ -15,8 +15,6 @@ router.post('/recovery-password', checkSchema(emailForRecovery), bodyValidator, 
 
 router.post('/new-password', checkSchema(passwordChange), bodyValidator, newPassword)
 
-router.get('/verify-email', checkSchema(tokenSchema), bodyValidator, verifyEmail)
-
-router.get('/change-password', test1)
+router.post('/verify-email', checkSchema(tokenSchema), bodyValidator, verifyEmail)
 
 export default router

@@ -23,6 +23,14 @@ const Home = () => {
         setSearchTerm(e.target.value);
     };
 
+    const handleAddToCart = async (productId) => {
+        try {
+            await axios.post('http://localhost:3000/cart', { productId });
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+        }
+    };
+
     const filteredProducts = products.filter(product =>
         product.item.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -34,6 +42,9 @@ const Home = () => {
                 <div className="flex space-x-4">
                     <Link to="/profile" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 active:bg-blue-700">
                         Profile
+                    </Link>
+                    <Link to="/cart" className="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600 active:bg-yellow-700">
+                        Cart
                     </Link>
                     <Link to="/login" className="bg-green-500 text-white p-2 rounded hover:bg-green-600 active:bg-green-700">
                         Login
@@ -58,7 +69,10 @@ const Home = () => {
                             <h2 className="text-xl font-bold text-white mb-2">{product.item}</h2>
                             <p className="text-gray-400 mb-4">Quantity: {product.quantity}</p>
                             <p className="text-lg font-semibold text-white">Price: R${product.price}</p>
-                            <button className="mt-4 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 active:bg-blue-700">
+                            <button
+                                onClick={() => handleAddToCart(product._id)}
+                                className="mt-4 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 active:bg-blue-700"
+                            >
                                 Add to Cart
                             </button>
                         </div>

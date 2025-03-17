@@ -13,7 +13,7 @@ const transporter = nodeMailer.createTransport({
 })
 
 export const sendVerificationEmail = async (userEmail, token) => {
-    const verificationLink = `http://localhost:3000/register/verify-email?token=${token}`; // check this later
+    const verificationLink = `http://localhost:5173/verify-email?token=${token}`; // check this later
 
     await transporter.sendMail({
         from: process.env.EMAIL_USER,
