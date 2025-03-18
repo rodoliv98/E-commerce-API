@@ -1,6 +1,6 @@
 import { Purchase } from '../mongooseSchemas/mongooseCreatePurchase.js'
 import { matchedData } from "express-validator";
-import { parseQuantity, compareQuantity, createOrder } from '../utils/utilFunctions.js'
+import { createOrder } from '../utils/utilFunctions.js'
 import { Product } from '../mongooseSchemas/mongooseCreateProduct.js';
 
 export const showCart = async (req, res) => {
@@ -10,6 +10,7 @@ export const showCart = async (req, res) => {
 }
 
 export const addProductToTheCart = async (req, res) => {  
+    if(!req.session.user) return res.status(401).send('Please login');
     const body = matchedData(req);
     const cart = req.session.cart || [];
     if(cart.length >= 11) return res.status(400).send('Cart is already full');

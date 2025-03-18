@@ -5,8 +5,6 @@ import { checkSchema } from 'express-validator'
 import { cartSchema } from '../Schemas/bodySchemas/cartSchema.js'
 import { paymentSchema } from '../Schemas/bodySchemas/paymentSchema.js'
 import { showCart, addProductToTheCart, createPurchase, deleteProductFromTheCart, decreaseQuantity, increaseQuantity } from '../controllers/cartController.js'
-import { deleteProductSchema } from '../Schemas/bodySchemas/deleteCartProductSchema.js'
-import idCheck from '../Middlewares/idCheck.js'
 
 const router = express.Router();
 
