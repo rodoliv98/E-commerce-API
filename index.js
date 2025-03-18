@@ -10,7 +10,7 @@ import productRoutes from './routes/productRoutes.js'
 import cartRoutes from './routes/cart.js'
 import usersRoutes from './routes/users.js'
 import 'dotenv/config'
-import { client } from './controllers/productController.js'
+//import { client } from './controllers/productController.js'
 
 const app = express();
 
@@ -45,9 +45,11 @@ app.use('/products', productRoutes)
 app.use('/cart', cartRoutes)
 app.use('/user', usersRoutes)
 
-const start = async () => {
+app.listen(3000, () => console.log('Server running on localhost:3000/'));
+
+/*const start = async () => {
     await client.connect();
     app.listen(3000, () => console.log('Server running on localhost:3000/'));
 }
 
-start()
+start()*/
