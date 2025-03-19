@@ -15,7 +15,7 @@ import 'dotenv/config'
 const app = express();
 
 const corsOptions = {
-    origin: 'ecommerce-front-sand-nine.vercel.app',
+    origin: 'https://ecommerce-front-sand-nine.vercel.app',
     credentials: true,
     optionsSuccessStatus: 200
 };
