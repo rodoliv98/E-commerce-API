@@ -8,6 +8,9 @@ export const logIn = async (req, res) => {
         if(findUser.emailVerified == false){
             return res.status(400).send('Please verify your email');
         }
+        console.log(req.session)
+        console.log(req.sessionID)
+        console.log(req.session.user)
         return res.status(200).send('Login successful');
     } catch(err){
         console.error(err);
