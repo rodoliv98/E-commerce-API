@@ -24,10 +24,6 @@ const MONGO_URI = process.env.MONGO_URI
 const SESSION_SECRET = process.env.SESSION_SECRET
 
 app.use(express.json());
-app.use(cors(corsOptions))
-mongoose.connect(MONGO_URI)
-        .then(() => console.log('Connected to database'))
-        .catch((err) => console.log(err.message))
 app.use(session({
     secret: SESSION_SECRET,
     saveUninitialized: false,
@@ -35,12 +31,17 @@ app.use(session({
     cookie: {
         maxAge: 60000 * 60,
         sameSite: 'none',
-        secure: true
+        secure: true,
+        path: '/'
     },
     store: MongoStore.create({
         client: mongoose.connection.getClient(),
     })
 }))
+app.use(cors(corsOptions))
+mongoose.connect(MONGO_URI)
+        .then(() => console.log('Connected to database'))
+        .catch((err) => console.log(err.message))
 app.use(passport.initialize())
 app.use(passport.session())
 app.use('/register', registerRoutes)
