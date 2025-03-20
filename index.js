@@ -13,9 +13,10 @@ import 'dotenv/config'
 //import { client } from './controllers/productController.js'
 
 const app = express();
+app.set('trust proxy', true);
 
 const corsOptions = {
-    origin: 'https://ecommerce-front-sand-nine.vercel.app',
+    origin: 'http://localhost:5173',
     credentials: true,
     optionsSuccessStatus: 200
 };
@@ -33,8 +34,8 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: 60000 * 60,
-        //sameSite: 'none',
-        //secure: true,
+        sameSite: 'none',
+        secure: true,
         path: '/'
     },
     store: MongoStore.create({
