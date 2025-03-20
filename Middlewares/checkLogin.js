@@ -3,6 +3,7 @@ import { User } from "../mongooseSchemas/mongooseCreateUser.js";
 async function checkLogin(req, res, next){
     console.log('Checking login');
     const { user } = req;
+    console.log(user);
     if(!user) return res.status(401).send('Unauthorized');
 
     try{
