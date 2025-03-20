@@ -6,7 +6,7 @@ import { matchedData } from "express-validator";
 
 export const showProducts = async (req, res) => {
     try{
-        console.log(req.session.passport.user)
+        console.log('hit')
         const findProducts = await Product.find();
         if(!findProducts) return res.status(404).send('No products found');
         return res.status(200).json({ products: findProducts });
