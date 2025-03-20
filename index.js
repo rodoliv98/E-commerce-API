@@ -16,7 +16,7 @@ const app = express();
 app.set('trust proxy', true);
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://ecommerce-front-sand-nine.vercel.app',
     credentials: true,
     optionsSuccessStatus: 200
 };
