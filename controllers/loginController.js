@@ -8,7 +8,7 @@ export const logIn = async (req, res) => {
         if(findUser.emailVerified == false){
             return res.status(400).send('Please verify your email');
         }
-        req.session.test = 'test';
+        
         console.log('Sessão criada:', req.session);
         console.log('Cookie na resposta:', res.getHeader('Set-Cookie'));
         return res.status(200).send('Login successful');

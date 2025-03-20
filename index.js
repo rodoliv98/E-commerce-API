@@ -34,7 +34,7 @@ app.use(session({
     cookie: {
         maxAge: 60000 * 60,
         //sameSite: 'none',
-        secure: true,
+        //secure: true,
         path: '/'
     },
     store: MongoStore.create({
