@@ -13,7 +13,7 @@ const transporter = nodeMailer.createTransport({
 })
 
 export const sendVerificationEmail = async (userEmail, token) => {
-    const verificationLink = `https://e-commerce-api-akwz.onrender.com/verify-email?token=${token}`; // check this later
+    const verificationLink = `https://ecommerce-front-sand-nine.vercel.app/verify-email?token=${token}`;
 
     await transporter.sendMail({
         from: process.env.EMAIL_USER,
@@ -24,7 +24,7 @@ export const sendVerificationEmail = async (userEmail, token) => {
 }
 
 export const sendPasswordRecoveryEmail = async (userEmail, token) => {
-    const verificationLink = `https://e-commerce-api-akwz.onrender.com/change-password?token=${token}`;
+    const verificationLink = `https://ecommerce-front-sand-nine.vercel.app/change-password?token=${token}`;
 
     await transporter.sendMail({
         from: process.env.EMAIL_USER,
