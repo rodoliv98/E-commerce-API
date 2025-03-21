@@ -15,7 +15,6 @@ async function checkLogin(req, res, next){
         console.error(err.message);
         return res.status(500).json({ msg: 'Internal server error' });
     }
-    next()
 }
 
 export default checkLogin
