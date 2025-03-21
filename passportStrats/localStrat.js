@@ -22,9 +22,11 @@ export default passport.use(
     new Strategy({ usernameField: 'email' }, async (email, password, done) => {
         try{
             const findUser = await User.findOne({ email });
-            if(!findUser) throw new Error('User not found');
+            if(!findUser) return done(null, false, { message: 'User not found' });
+
             const isMatch = await bcrypt.compare(password, findUser.password);
-            if(!isMatch) throw new Error('Invalid password');
+            if(!isMatch) return done(null, false, { message: 'Invalid password' });
+
             if(findUser.emailVerified == false){
                 await reSendEmailToken(findUser._id, email);
             }
