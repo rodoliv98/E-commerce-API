@@ -20,7 +20,7 @@ export const createUserProfile = {
             errorMessage: 'Cpf is required',
         },
         matches: {
-            options: /^\d{11}$/,
+            options: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
             errorMessage: 'Invalid CPF format',
         },
         trim: true,
@@ -33,7 +33,7 @@ export const createUserProfile = {
             errorMessage: 'Birth date cannot be empty',
         },
         matches: {
-            options: /^\d{2}-\d{2}-\d{4}$/,
+            options: /^\d{2}\/\d{2}\/\d{4}$/,
             errorMessage: 'Birth date must be in DD-MM-YYYY format',
         },
         trim: true,
