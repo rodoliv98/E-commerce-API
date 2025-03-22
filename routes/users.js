@@ -8,6 +8,7 @@ import { createUserProfile } from '../Schemas/bodySchemas/createUserProfileSchem
 import { patchUserProfile } from '../Schemas/bodySchemas/patchUserProfileSchema.js'
 import { addressSchema } from '../Schemas/bodySchemas/createAddressSchema.js'
 import { patchAddressSchema } from '../Schemas/bodySchemas/patchAddressSchema.js';
+import ageValidator from '../Middlewares/birthDateValidator.js';
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ router.get('/address', checkLogin, showAddresses)
 
 router.post('/address', checkSchema(addressSchema), bodyValidator, checkLogin, createAddress)
 
-router.post('/profile', checkSchema(createUserProfile), bodyValidator, checkLogin, createProfile)
+router.post('/profile', checkSchema(createUserProfile), bodyValidator, ageValidator, checkLogin, createProfile)
 
 router.patch('/profile', checkSchema(patchUserProfile), bodyValidator, checkLogin, patchProfile)
 
