@@ -1,5 +1,5 @@
 export const paymentSchema = {
-    'person.fullName': {
+    fullName: {
         isString: {
             errorMessage: 'Invalid name',
         },
@@ -8,7 +8,7 @@ export const paymentSchema = {
         },
         trim: true,
     },
-    'person.cpf': {
+    cpf: {
         isString: {
             errorMessage: 'Invalid CPF',
         },
@@ -16,12 +16,12 @@ export const paymentSchema = {
             errorMessage: 'CPF cannot be empty',
         },
         matches: {
-            options: /^\d{11}$/,
-            errorMessage: 'Invalid CPF format',
+            options: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
+            errorMessage: 'Invalid CPF',
         },
         trim: true,
     },
-    'person.birthDate': {
+    birthDate: {
         isString: {
             errorMessage: 'Invalid birth date',
         },
@@ -29,12 +29,12 @@ export const paymentSchema = {
             errorMessage: 'Birth date cannot be empty',
         },
         matches: {
-            options: /^\d{2}-\d{2}-\d{4}$/,
-            errorMessage: 'Birth date must be in DD-MM-YYYY format',
+            options: /^\d{2}\/\d{2}\/\d{4}$/,
+            errorMessage: 'Invalid birth date',
         },
         trim: true,
     },
-    'person.address.country': {
+    country: {
         isString: {
             errorMessage: 'Invalid country',
         },
@@ -43,7 +43,7 @@ export const paymentSchema = {
         },
         trim: true,
     },
-    'person.address.state': {
+    state: {
         isString: {
             errorMessage: 'Invalid state',
         },
@@ -52,7 +52,7 @@ export const paymentSchema = {
         },
         trim: true,
     },
-    'person.address.city': {
+    city: {
         isString: {
             errorMessage: 'Invalid city',
         },
@@ -61,7 +61,7 @@ export const paymentSchema = {
         },
         trim: true,
     },
-    'person.address.street': {
+    street: {
         isString: {
             errorMessage: 'Invalid street',
         },
@@ -70,16 +70,29 @@ export const paymentSchema = {
         },
         trim: true,
     },
-    'person.address.houseNumber': {
-        isInt: {
+    houseNumber: {
+        isString: {
             errorMessage: 'Invalid house number',
         },
         notEmpty: {
             errorMessage: 'House number cannot be empty',
         },
-        toInt: true,
+        trim: true,
     },
-    card: {
+    cep: {
+        isString: {
+            errorMessage: 'Invalid CEP',
+        },
+        notEmpty: {
+            errorMessage: 'CEP cannot be empty',
+        },
+        matches: {
+            options: /^\d{5}-\d{3}$/,
+            errorMessage: 'Invalid CEP',
+        },
+        trim: true,
+    },
+    cardNumber: {
         isString: {
             errorMessage: 'Invalid card',
         },
@@ -87,8 +100,17 @@ export const paymentSchema = {
             errorMessage: 'Card cannot be empty',
         },
         matches: {
-            options: /5[1-5][0-9]{14}/,
+            options: /^\d{4}\.\d{4}\.\d{4}\.\d{4}$/,
             errorMessage: 'Invalid card number',
+        },
+        trim: true,
+    },
+    total: {
+        isNumeric: {
+            errorMessage: 'Invalid total',
+        },
+        notEmpty: {
+            errorMessage: 'Total cannot be empty',
         },
         trim: true,
     },
@@ -100,8 +122,16 @@ export const paymentSchema = {
             errorMessage: 'Currency cannot be empty',
         },
         isIn: {
-            options: [['BRL', 'USD']],
+            options: [['BRL', 'USD', 'EUR']],
             errorMessage: 'Choose between BRL and USD',
+        },
+    },
+    cart: {
+        isArray: {
+            errorMessage: 'Cart must be an array',
+        },
+        notEmpty: {
+            errorMessage: 'Cart cannot be empty',
         },
     },
 };

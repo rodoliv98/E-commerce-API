@@ -55,9 +55,24 @@ export const patchProfile = async (req, res) => {
 export const showHistoric = async (req, res) => {
     const ID = req.session.passport;
     try{
-        const showBuys = await Purchase.find({ userID: ID.user });
-        if(showBuys.length === 0) return res.status(404).send('No historic');
-        return res.status(200).json({ historic: showBuys });
+        const showPurchases = await Purchase.find({ userID: ID.user });
+        if(showPurchases.length === 0) return res.status(404).send('No historic');
+        //console.log(showBuys)
+        const historic = showPurchases.map(buy => ({
+            id: buy._id,
+            fullName: buy.fullName,
+            total: buy.total,
+            state: buy.state,
+            city: buy.city,
+            street: buy.street,
+            houseNumber: buy.houseNumber,
+            cep: buy.cep,
+            cart: buy.cart,
+            date: buy.createdAt,
+            currency: buy.currency
+        }))
+        console.log(historic)
+        return res.status(200).json({historic});
     } catch(err){
         console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });

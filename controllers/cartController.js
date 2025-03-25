@@ -1,6 +1,6 @@
 import { Purchase } from '../mongooseSchemas/mongooseCreatePurchase.js'
 import { matchedData } from "express-validator";
-import { createOrder } from '../utils/utilFunctions.js'
+import { createOrder, reduceQuantityInDatabase } from '../utils/utilFunctions.js'
 import { Product } from '../mongooseSchemas/mongooseCreateProduct.js';
 
 export const showCart = async (req, res) => {
@@ -43,7 +43,7 @@ export const addProductToTheCart = async (req, res) => {
 export const increaseQuantity = async (req, res) => {
     const data = matchedData(req); 
     const cart = req.session.cart; 
-
+    console.log(data)
     try{
         const item = await Product.findById(data.productId);
         if(!item) return res.status(404).send('Product not found');
@@ -101,16 +101,27 @@ export const deleteProductFromTheCart = async (req, res) => {
 }
 
 export const createPurchase = async (req, res) => {
-    const { person, card, currency } = matchedData(req);
-    const cart = req.session.cart;
-    const ID = req.session.passport;
-    if(!cart) return res.status(400).send('No itens in the cart');
+    const data = matchedData(req);
+    const ID = req.session.passport.user;
     try{
-        const newOrder = await createOrder(person, card, currency, cart, ID);
-        const purchase = new Purchase(newOrder);
-        await purchase.save();
-        req.session.cart = [];
-        return res.status(201).json({ message: 'New purchase made', purchase: purchase });
+        const newPurchase = await Purchase.create({ 
+                                    fullName: data.fullName,
+                                    cpf: data.cpf,
+                                    birthDate: data.birthDate,
+                                    country: data.country,
+                                    state: data.state,
+                                    city: data.city,
+                                    street: data.street,
+                                    houseNumber: data.houseNumber,
+                                    cep: data.cep,
+                                    cart: data.cart,
+                                    card: data.cardNumber,
+                                    total: data.total,
+                                    currency: data.currency,
+                                    userID: ID
+                                });
+        await reduceQuantityInDatabase(data.cart)
+        return res.status(200).json({ msg: 'Purchase made', purchaseID: newPurchase._id });
     } catch(err){
         console.error(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
