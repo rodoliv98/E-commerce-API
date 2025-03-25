@@ -16,7 +16,7 @@ export const patchUserProfile = {
         },
         matches: {
             options: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
-            errorMessage: 'Invalid CPF format',
+            errorMessage: 'CPF must be in XXX.XXX.XXX-XX format',
         },
         trim: true,
         optional: true
@@ -27,7 +27,7 @@ export const patchUserProfile = {
         },
         matches: {
             options: /^\d{2}\/\d{2}\/\d{4}$/,
-            errorMessage: 'Birth date must be in DD-MM-YYYY format',
+            errorMessage: 'Birth date must be in DD/MM/YYYY format',
         },
         trim: true,
         optional: true

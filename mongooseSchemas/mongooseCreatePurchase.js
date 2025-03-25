@@ -19,35 +19,7 @@ const cartSchema = new mongoose.Schema({
     },
 })
 
-const addressSchema = new mongoose.Schema({
-    country: {
-        type: String,
-        required: [true, 'Country is required'],
-        trim: true,
-    },
-    state: {
-        type: String,
-        required: [true, 'State is required'],
-        trim: true,
-    },
-    city: {
-        type: String,
-        required: [true, 'City is required'],
-        trim: true,
-    },
-    street: {
-        type: String,
-        required: [true, 'Street is required'],
-        trim: true,
-    },
-    houseNumber: {
-        type: Number,
-        min: 1,
-        max: 9999,
-    }
-})
-
-const personSchema = new mongoose.Schema({
+const createPurchase = new mongoose.Schema({
     fullName: {
         type: String,
         required: [true, 'Full name required'],
@@ -55,24 +27,49 @@ const personSchema = new mongoose.Schema({
     },
     cpf: {
         type: String,
-        required: [true, 'Cpf is needed'],
+        required: [true, 'CPF required'],
+        min: 14,
+        max: 14,
         trim: true,
     },
     birthDate: {
         type: String,
-        required: [true, 'Birthdate is required'],
+        required: [true, 'Birth date required'],
+        min: 10,
+        max: 10,
         trim: true,
     },
-    address: {
-        type: addressSchema,
-        required: true,
-    }
-})
-
-const createPurchase = new mongoose.Schema({
-    person: {
-        type: personSchema,
-        required: true,
+    country: {
+        type: String,
+        required: [true, 'Country required'],
+        trim: true,
+    },
+    state: {
+        type: String,
+        required: [true, 'State required'],
+        trim: true,
+    },
+    city: {
+        type: String,
+        required: [true, 'City required'],
+        trim: true,
+    },
+    street: {
+        type: String,
+        required: [true, 'Street required'],
+        trim: true,
+    },
+    houseNumber: {
+        type: String,
+        required: [true, 'House number required'],
+        trim: true,
+    },
+    cep: {
+        type: String,
+        required: [true, 'CEP required'],
+        min: 9,
+        max: 9,
+        trim: true,
     },
     cart: {
         type: [cartSchema],
@@ -81,8 +78,8 @@ const createPurchase = new mongoose.Schema({
     card: {
         type: String,
         required: [true, 'Card number required'],
-        min: 16,
-        max: 16,
+        min: 19,
+        max: 19,
         trim: true,
     },
     total: {
@@ -90,14 +87,19 @@ const createPurchase = new mongoose.Schema({
         required: [true, 'Total value missing'],
         trim: true,
     },
-    date: {
-        type: Date,
-        required: [true, 'Date is missing'],
+    currency: {
+        type: String,
+        required: [true, 'Currency value missing'],
+        trim: true
     },
     userID: {
         type: String,
         required: [true, 'UserID is required']
-    }
-})
+    },
+    cart: {
+        type: [cartSchema],
+        required: true,
+    },
+}, { timestamps: true });
 
 export const Purchase = mongoose.model("Purchase", createPurchase);
