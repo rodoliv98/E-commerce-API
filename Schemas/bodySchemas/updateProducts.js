@@ -43,7 +43,7 @@ export const updateProduct = {
             errorMessage: 'Image path must be a string'
         },
         matches: {
-            options: /^http:\/\/localhost:3000\/images\/\d+-[a-z0-9ç-]+\.jpg$/i,
+            options: /^https:\/\/e-commerce-api-[A-Za-z0-9]+\.onrender\.com\/images\/\d+-[A-Za-z0-9-]+\.jpg$/,
             errorMessage: 'Invalid path'
         },
         trim: true,
