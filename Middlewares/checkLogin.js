@@ -7,7 +7,6 @@ async function checkLogin(req, res, next){
     try{
         const findUser = await User.findById(user);
         if(!findUser) return res.status(404).send('User not found');
-        console.log('User logged in');
         next();
     } catch(err){
         console.error(err.message);

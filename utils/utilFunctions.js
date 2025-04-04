@@ -1,5 +1,5 @@
 import { Product } from "../mongooseSchemas/mongooseCreateProduct.js"
-import { generateEmailToken } from '../nodeMailer/tokenService.js'
+import { generateToken } from '../nodeMailer/tokenService.js'
 import { sendVerificationEmail } from '../nodeMailer/emailService.js'
 
 export const parseQuantity = async (body) => {
@@ -58,6 +58,6 @@ export const createOrder = async (person, card, currency, cart, ID) => {
 }
 
 export const reSendEmailToken = async (id, email) => {
-    const token = generateEmailToken(id);
+    const token = generateToken(id);
     await sendVerificationEmail(email, token);
 }

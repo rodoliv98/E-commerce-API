@@ -6,7 +6,6 @@ import { matchedData } from "express-validator";
 
 export const showProducts = async (req, res) => {
     try{
-        console.log('hit')
         const findProducts = await Product.find();
         if(!findProducts) return res.status(404).send('No products found');
         return res.status(200).json({ products: findProducts });
@@ -56,7 +55,7 @@ export const createProductInDb = async (req, res) => {
     const newProduct = new Product(data);
     try{
         await newProduct.save();
-        return res.status(201).json({ msg: 'Product added to data base', product: newProduct });
+        return res.status(201).json({ msg: 'Product added to data base' });
     } catch(err){
         console.error(err.message);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });

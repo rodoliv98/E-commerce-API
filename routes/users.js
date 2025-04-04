@@ -9,6 +9,7 @@ import { patchUserProfile } from '../Schemas/bodySchemas/patchUserProfileSchema.
 import { addressSchema } from '../Schemas/bodySchemas/createAddressSchema.js'
 import { patchAddressSchema } from '../Schemas/bodySchemas/patchAddressSchema.js';
 import ageValidator from '../Middlewares/birthDateValidator.js';
+import { status } from '../controllers/statusController.js';
 
 const router = express.Router();
 
@@ -24,10 +25,12 @@ router.post('/profile', checkSchema(createUserProfile), bodyValidator, ageValida
 
 router.patch('/profile', checkSchema(patchUserProfile), bodyValidator, checkLogin, patchProfile)
 
-router.patch('/address', checkSchema(patchAddressSchema), bodyValidator, checkLogin, patchAddress)
+router.patch('/address/:id', checkSchema(patchAddressSchema), bodyValidator, checkLogin, patchAddress)
 
 router.delete('/address/:id', checkLogin, deleteAddress)
 
 router.get('/historic', checkLogin, showHistoric)
+
+router.get('/status', status)
 
 export default router
