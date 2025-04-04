@@ -1,6 +1,6 @@
 import { Purchase } from '../mongooseSchemas/mongooseCreatePurchase.js'
 import { matchedData } from "express-validator";
-import { createOrder, reduceQuantityInDatabase } from '../utils/utilFunctions.js'
+import { reduceQuantityInDatabase } from '../utils/utilFunctions.js'
 import { Product } from '../mongooseSchemas/mongooseCreateProduct.js';
 
 export const showCart = async (req, res) => {
@@ -12,7 +12,7 @@ export const showCart = async (req, res) => {
 export const addProductToTheCart = async (req, res) => {  
     const body = matchedData(req);
     const cart = req.session.cart || [];
-    if(cart.length >= 11) return res.status(400).send('Cart is already full');
+
     try{
         const findItem = await Product.findById(body.productId);
         if(!findItem) return res.status(404).send('Product not found');
@@ -21,6 +21,7 @@ export const addProductToTheCart = async (req, res) => {
         if(duplicateItem){
             const index = cart.findIndex(product => product.item === findItem.item);
             if(cart[index].quantity >= 10) return res.status(400).send('You can only have 10 of the same item in the cart');
+            if(cart[index].quantity > findItem.quantity) return res.status(400).send('Out of sotck');
             cart[index].quantity++;
             return res.status(200).json({ msg: 'Quantity updated', product: cart[index] });
         }
@@ -43,7 +44,6 @@ export const addProductToTheCart = async (req, res) => {
 export const increaseQuantity = async (req, res) => {
     const data = matchedData(req); 
     const cart = req.session.cart; 
-    console.log(data)
     try{
         const item = await Product.findById(data.productId);
         if(!item) return res.status(404).send('Product not found');
@@ -51,7 +51,6 @@ export const increaseQuantity = async (req, res) => {
         const index = cart.findIndex(product => product.item === item.item);
         if(cart[index].quantity >= 10) return res.status(400).send('You can only have 10 of the same item in the cart');
         cart[index].quantity++;
-
         return res.status(200).json({ msg: 'Quantity updated', product: cart[index] });
     }
     catch(err){
@@ -63,7 +62,6 @@ export const increaseQuantity = async (req, res) => {
 export const decreaseQuantity = async (req, res) => {
     const data = matchedData(req); 
     const cart = req.session.cart; 
-
     try{
         const item = await Product.findById(data.productId);
         if(!item) return res.status(404).send('Product not found');
@@ -121,6 +119,7 @@ export const createPurchase = async (req, res) => {
                                     userID: ID
                                 });
         await reduceQuantityInDatabase(data.cart)
+        req.session.cart = [];
         return res.status(200).json({ msg: 'Purchase made', purchaseID: newPurchase._id });
     } catch(err){
         console.error(err);

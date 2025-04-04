@@ -15,6 +15,16 @@ const createMongoProductModel = new mongoose.Schema({
         type: Number,
         min: 1,
         trim: true
+    },
+    imagePath: {
+        type: String,
+        required: [function() { return this.isNew; }, 'Path required'],
+        trim: true
+    },
+    category: {
+        type: String,
+        required: [function() { return this.isNew; }, 'Category is needed'],
+        trim: true
     }
 })
 

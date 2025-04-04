@@ -28,9 +28,9 @@ export const createAddress = async (req, res) => {
 
 export const patchAddress = async (req, res) => {
     const data = matchedData(req);
-    const ID = req.user.id;
+    const ID = req.params.id;
     try{
-        const address = await Address.findOneAndUpdate({ userID: ID }, data, { new: true } );
+        const address = await Address.findOneAndUpdate({ _id: ID }, data, { new: true } );
         if(!address) return res.status(404).send('Address not found');
         return res.status(200).json({ msg: 'Address updated!', address });
     } catch(err){

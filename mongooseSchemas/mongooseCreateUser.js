@@ -25,6 +25,10 @@ const createMongoUserModel = new mongoose.Schema({
     emailVerified: {
         type: Boolean,
         default: false
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
 })
 
