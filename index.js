@@ -15,13 +15,19 @@ import 'dotenv/config'
 //import { client } from './controllers/productController.js'
 
 const app = express();
-app.set('trust proxy', true);
+/* app.set('trust proxy', true); */
 
 const corsOptions = {
-    origin: 'https://ecommerce-front-sand-nine.vercel.app',
+    origin: 'http://localhost:5173',
     credentials: true,
     optionsSuccessStatus: 200
 };
+
+/* const corsOptions = {
+    origin: 'https://ecommerce-front-sand-nine.vercel.app',
+    credentials: true,
+    optionsSuccessStatus: 200
+}; */
 
 app.use(express.json());
 
@@ -37,9 +43,9 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: 60000 * 60,
-        sameSite: 'none',
+        /* sameSite: 'none',
         secure: true,
-        path: '/'
+        path: '/' */
     },
     store: MongoStore.create({
         client: mongoose.connection.getClient(),

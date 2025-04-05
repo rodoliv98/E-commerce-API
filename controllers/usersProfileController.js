@@ -57,7 +57,6 @@ export const showHistoric = async (req, res) => {
     try{
         const showPurchases = await Purchase.find({ userID: ID.user });
         if(showPurchases.length === 0) return res.status(404).send('No historic');
-        //console.log(showBuys)
         const historic = showPurchases.map(buy => ({
             id: buy._id,
             fullName: buy.fullName,
