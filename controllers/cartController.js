@@ -41,24 +41,6 @@ export const addProductToTheCart = async (req, res) => {
     }
 }
 
-export const increaseQuantity = async (req, res) => {
-    const data = matchedData(req); 
-    const cart = req.session.cart; 
-    try{
-        const item = await Product.findById(data.productId);
-        if(!item) return res.status(404).send('Product not found');
-
-        const index = cart.findIndex(product => product.item === item.item);
-        if(cart[index].quantity >= 10) return res.status(400).send('You can only have 10 of the same item in the cart');
-        cart[index].quantity++;
-        return res.status(200).json({ msg: 'Quantity updated', product: cart[index] });
-    }
-    catch(err){
-        console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message });
-    }
-}
-
 export const decreaseQuantity = async (req, res) => {
     const data = matchedData(req); 
     const cart = req.session.cart; 

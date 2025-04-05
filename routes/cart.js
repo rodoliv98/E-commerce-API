@@ -4,7 +4,7 @@ import checkLogin from '../Middlewares/checkLogin.js'
 import { checkSchema } from 'express-validator'
 import { cartSchema } from '../Schemas/bodySchemas/cartSchema.js'
 import { paymentSchema } from '../Schemas/bodySchemas/paymentSchema.js'
-import { showCart, addProductToTheCart, createPurchase, deleteProductFromTheCart, decreaseQuantity, increaseQuantity } from '../controllers/cartController.js'
+import { showCart, addProductToTheCart, createPurchase, deleteProductFromTheCart, decreaseQuantity } from '../controllers/cartController.js'
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.post('/', checkSchema(cartSchema), bodyValidator, checkLogin, addProductT
 
 router.patch('/decrease', checkSchema(cartSchema), bodyValidator, checkLogin, decreaseQuantity)
 
-router.patch('/increase', checkSchema(cartSchema), bodyValidator, checkLogin, increaseQuantity)
+router.patch('/increase', checkSchema(cartSchema), bodyValidator, checkLogin, addProductToTheCart)
 
 router.delete('/', checkSchema(cartSchema), bodyValidator, checkLogin, deleteProductFromTheCart)
 
