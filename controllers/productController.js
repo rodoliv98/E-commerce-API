@@ -32,7 +32,20 @@ export const showProducts = async (req, res) => {
 }
 
 export const showProductsById = async (req, res) => {
+    const id = req.params.id;
+    if(!id) return res.status(400).send('Product id not provided');
+    if(id.length !== 24) return res.status(400).send('Invalid product id');
     try{
+        const findItens = await Product.findById(id);
+        if(!findItens) return res.status(404).send('Product not found');
+        return res.status(200).json({ product: findItens });
+    } catch(err){
+        console.error(err.message);
+        return res.status(500).json({ msg: 'Internal server error', details: err.message });
+    }
+    
+    
+    /* try{
         const cachedProducts = await client.get(`products:${req.params.id}`)
         if(cachedProducts != null){
             console.log('hit')
@@ -47,7 +60,7 @@ export const showProductsById = async (req, res) => {
     } catch(err){
         console.error(err.message);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
-    }
+    } */
 }
 
 export const createProductInDb = async (req, res) => {
