@@ -41,7 +41,6 @@ export const patchAddress = async (req, res) => {
 
 export const deleteAddress = async (req, res) => {
     const { id } = req.params;
-    const ID = req.user.id;
     try{
         const address = await Address.findOneAndDelete({ _id: id });
         if(!address) return res.status(404).send('Address not found');
