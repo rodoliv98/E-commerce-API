@@ -70,7 +70,6 @@ export const showHistoric = async (req, res) => {
             date: buy.createdAt,
             currency: buy.currency
         }))
-        console.log(historic)
         return res.status(200).json({historic});
     } catch(err){
         console.error(err);
