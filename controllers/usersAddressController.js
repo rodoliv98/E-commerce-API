@@ -17,8 +17,7 @@ export const createAddress = async (req, res) => {
     const data = matchedData(req);
     const ID = req.user.id;
     try{
-        const newAddress = new Address({ ...data, userID: ID });
-        await newAddress.save();
+        const newAddress = await Address.create({ ...data, userID: ID });
         return res.status(200).json({ msg: 'New address saved', details: newAddress })
     } catch(err){
         console.error(err);
