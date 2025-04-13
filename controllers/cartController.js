@@ -100,7 +100,7 @@ export const createPurchase = async (req, res) => {
                                     currency: data.currency,
                                     userID: ID
                                 });
-        await reduceQuantityInDatabase(data.cart)
+        await reduceQuantityInDatabase(data.cart);
         req.session.cart = [];
         return res.status(200).json({ msg: 'Purchase made', purchaseID: newPurchase._id });
     } catch(err){
