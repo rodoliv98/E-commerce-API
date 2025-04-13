@@ -3,7 +3,7 @@ import 'dotenv/config'
 
 
 const transporter = nodeMailer.createTransport({
-    host: "smtp.mailersend.net",
+    host: "smtp.gmail.com",
     port: 587,
     secure: false,
     auth: {

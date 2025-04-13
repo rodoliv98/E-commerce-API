@@ -31,8 +31,7 @@ export const createProfile = async (req, res) => {
     const data = matchedData(req);
     const ID = req.user.id;
     try{
-        const newProfile = new Profile({...data, userID: ID });
-        await newProfile.save();
+        const newProfile = await Profile.create({...data, userID: ID });
         return res.status(200).json({ msg: 'Profile created', details: newProfile });
     } catch(err){
         console.error(err);
@@ -53,9 +52,9 @@ export const patchProfile = async (req, res) => {
 }
 
 export const showHistoric = async (req, res) => {
-    const ID = req.session.passport;
+    const ID = req.user.id;
     try{
-        const showPurchases = await Purchase.find({ userID: ID.user });
+        const showPurchases = await Purchase.find({ userID: ID });
         if(showPurchases.length === 0) return res.status(404).send('No historic');
         const historic = showPurchases.map(buy => ({
             id: buy._id,
