@@ -11,12 +11,12 @@ export const createAccount = async (req, res) => {
         if(emailExist) return res.status(400).send('Esse email já está cadastrado');
 
         const hashedPassword = await bcrypt.hash(data.password, 10);
-        const newUser = new User({ ...data, password: hashedPassword });
-        await newUser.save();
+        const newUser = await User.create({ ...data, password: hashedPassword });
+
         const token = generateToken(newUser._id);
         await sendVerificationEmail(data.email, token);
 
-        return res.status(201).send('Conta criada com sucesso! Verifique seu email para ativar sua conta');
+        return res.status(201).send('Account created');
     } catch(err){
         console.log(err);
         return res.status(500).json({ msg: 'Internal server error', details: err.message });
