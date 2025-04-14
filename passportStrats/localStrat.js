@@ -26,10 +26,6 @@ export default passport.use(
 
             const isMatch = await bcrypt.compare(password, findUser.password);
             if(!isMatch) return done(null, false, { message: 'Invalid password' });
-
-            if(findUser.emailVerified == false){
-                await reSendEmailToken(findUser._id, email);
-            }
             
             done(null, findUser);   
         } catch(err){
