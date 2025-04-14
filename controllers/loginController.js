@@ -7,9 +7,6 @@ export const logIn = async (req, res) => {
     const data = matchedData(req);
     try{
         const findUser = await User.findOne({ email: data.email });
-        if(findUser.emailVerified == false){
-            return res.status(400).send('Please verify your email');
-        }
         
         if(findUser.isAdmin){
             const token = generateToken(findUser.isAdmin);
