@@ -7,8 +7,10 @@ export const parseQuantity = async (body) => {
     return parsedBody;
 }
 
-export const getCartTotal = async (array) => {
+export const getCartTotal = async (array, cartTotal) => {
+    const total = parseInt(cartTotal);
     let sum = 0;
+
     for(let i = 0; i < array.length; i++){
         const price = array[i].price;
         const quantity = array[i].quantity;
@@ -16,15 +18,24 @@ export const getCartTotal = async (array) => {
         sum += total;
     }
     sum = sum.toFixed(2, 0);
-    return sum;
+
+    if(!sum === total){
+        throw new Error('Total price sent by the frontend dont match');
+    }
 }
 
 export const reduceQuantityInDatabase = async (array) => {
     for(let i = 0; i < array.length; i++){
+
         const quantity = array[i].quantity;
-        const findItem = await Product.findById(array[i]._id);
+        const findItem = await Product.findById(array[i].productId);
+
+        if(findItem.quantity < array[i].quantity || array[i].quantity <= 0){
+            throw new Error('Out of stock');
+        } 
+
         const updatedQuantity = { quantity: findItem.quantity - quantity };
-        await Product.findByIdAndUpdate(array[i]._id, updatedQuantity);
+        await Product.findByIdAndUpdate(array[i].productId, updatedQuantity);
     }
 }
 

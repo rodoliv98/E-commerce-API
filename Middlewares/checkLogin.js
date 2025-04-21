@@ -1,17 +1,25 @@
-import { User } from "../mongooseSchemas/mongooseCreateUser.js";
+import { verifyToken } from "../nodeMailer/tokenService.js";
 
-async function checkLogin(req, res, next){
-    const { user } = req;
-    if(!user) return res.status(401).send('Unauthorized');
+function checkLogin(req, res, next){
+    const auth = req.headers.authorization;
+    if(!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ msg: 'Please login' });
+    
+    const removedBearer = auth.split('Bearer ' )[1]
+    const token = JSON.parse(removedBearer);
 
     try{
-        const findUser = await User.findById(user);
-        if(!findUser) return res.status(404).send('User not found');
+        const payload = verifyToken(token.token);
+        req.user = { id: payload.userId.id, role: payload.userId.isAdmin };
         next();
+
     } catch(err){
-        console.error(err.message);
-        return res.status(500).json({ msg: 'Internal server error' });
+        console.error(err)
+        if(err.name === 'TokenExpiredError'){
+            return res.status(401).json({ msg: 'Token expired, please login again' });
+        }
+        return res.status(401).json({ msg: 'Invalid token' });
     }
+    
 }
 
 export default checkLogin

@@ -19,7 +19,7 @@ export const createAccount = async (req, res) => {
         return res.status(201).send('Account created');
     } catch(err){
         console.log(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message });
+        return res.status(500).json({ msg: 'Internal server error' });
     }
 }
 
@@ -31,7 +31,7 @@ export const verifyEmail = async (req, res) => {
         return res.status(200).send('Seu email foi verificado com sucesso! Você já pode fazer login');
     } catch(err){
         console.error(err);
-        return res.status(400).json({ msg: 'Token either invalid or expired', details: err.message });
+        return res.status(400).json({ msg: 'Token either invalid or expired' });
     }
 }
 
@@ -47,7 +47,7 @@ export const recoverPassword = async (req, res) => {
         return res.status(200).send('Email enviado! Verifique sua caixa de entrada para redefinir sua senha');
     } catch(err){
         console.error(err)
-        return res.status(500).json({ details: err.message })
+        return res.status(500).json({ msg: 'Internal server error' })
     }
 }
 

@@ -1,5 +1,5 @@
 import express from 'express'
-import checkLogin from '../Middlewares/checkLogin.js'
+import checkLogin from '../Middlewares/checkLogin.js';
 import bodyValidator from '../Middlewares/bodyValidator.js';
 import { createProfile, patchProfile, showHistoric, showProfile, showUser } from '../controllers/usersProfileController.js'
 import { createAddress, patchAddress, showAddresses, deleteAddress } from '../controllers/usersAddressController.js'
@@ -9,7 +9,6 @@ import { patchUserProfile } from '../Schemas/bodySchemas/patchUserProfileSchema.
 import { addressSchema } from '../Schemas/bodySchemas/createAddressSchema.js'
 import { patchAddressSchema } from '../Schemas/bodySchemas/patchAddressSchema.js';
 import ageValidator from '../Middlewares/birthDateValidator.js';
-import { status } from '../controllers/statusController.js';
 
 const router = express.Router();
 
@@ -30,7 +29,5 @@ router.patch('/address/:id', checkSchema(patchAddressSchema), bodyValidator, che
 router.delete('/address/:id', checkLogin, deleteAddress)
 
 router.get('/historic', checkLogin, showHistoric)
-
-router.get('/status', status)
 
 export default router

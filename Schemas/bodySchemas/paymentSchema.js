@@ -92,7 +92,7 @@ export const paymentSchema = {
         },
         trim: true,
     },
-    cardNumber: {
+    card: {
         isString: {
             errorMessage: 'Invalid card',
         },

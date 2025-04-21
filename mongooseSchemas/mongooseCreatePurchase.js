@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const cartSchema = new mongoose.Schema({
-    _id: {
+    productId: {
         type: String,
         required: [true, 'ID is required'],
     },
@@ -95,10 +95,6 @@ const createPurchase = new mongoose.Schema({
     userID: {
         type: String,
         required: [true, 'UserID is required']
-    },
-    cart: {
-        type: [cartSchema],
-        required: true,
     },
 }, { timestamps: true });
 

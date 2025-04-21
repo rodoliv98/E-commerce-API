@@ -9,7 +9,7 @@ export const showAddresses = async (req, res) => {
         return res.status(200).json(addresses);
     } catch(err){
         console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message })
+        return res.status(500).json({ msg: 'Internal server error' })
     }
 }
 
@@ -21,7 +21,7 @@ export const createAddress = async (req, res) => {
         return res.status(200).json({ msg: 'New address saved', details: newAddress })
     } catch(err){
         console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message })
+        return res.status(500).json({ msg: 'Internal server error' })
     }
 }
 
@@ -34,12 +34,12 @@ export const patchAddress = async (req, res) => {
         return res.status(200).json({ msg: 'Address updated!', address });
     } catch(err){
         console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message })
+        return res.status(500).json({ msg: 'Internal server error' })
     }
 }
 
 export const deleteAddress = async (req, res) => {
-    const { id } = req.params;
+    const ID = req.params.id;
     try{
         const address = await Address.findOneAndDelete({ _id: id });
         if(!address) return res.status(404).send('Address not found');
@@ -47,6 +47,6 @@ export const deleteAddress = async (req, res) => {
     }
     catch(err){
         console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message })
+        return res.status(500).json({ msg: 'Internal server error' })
     }
 }

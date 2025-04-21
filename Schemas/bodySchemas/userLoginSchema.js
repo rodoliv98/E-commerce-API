@@ -8,7 +8,7 @@ export const userLogin = {
         },
         matches: {
             options: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi,
-            errorMessage: 'Invalid email'
+            errorMessage: 'Email invalido'
         },
         trim: true,
     },
@@ -21,7 +21,7 @@ export const userLogin = {
         },
         matches: {
             options: /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
-            errorMessage: 'Invalid password'
+            errorMessage: 'Senha invalida'
         },
         trim: true,
     }
