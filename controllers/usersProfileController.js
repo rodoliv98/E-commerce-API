@@ -11,7 +11,7 @@ export const showUser = async (req, res) => {
         return res.status(200).json({ msg: findUser.firstName, email: findUser.email })
     } catch(err){
         console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message });
+        return res.status(500).json({ msg: 'Internal server error' });
     }
 }
 
@@ -23,7 +23,7 @@ export const showProfile = async (req, res) => {
         return res.status(200).json({ findProfile });
     } catch(err){
         console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message });
+        return res.status(500).json({ msg: 'Internal server error' });
     }
 }
 
@@ -35,7 +35,7 @@ export const createProfile = async (req, res) => {
         return res.status(200).json({ msg: 'Profile created', details: newProfile });
     } catch(err){
         console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message });
+        return res.status(500).json({ msg: 'Internal server error' });
     }
 }
 
@@ -47,7 +47,7 @@ export const patchProfile = async (req, res) => {
         return res.status(200).json({ msg: 'Profile updated', details: updatedProfile })
     } catch(err){
         console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message });
+        return res.status(500).json({ msg: 'Internal server error' });
     }
 }
 
@@ -72,6 +72,6 @@ export const showHistoric = async (req, res) => {
         return res.status(200).json({historic});
     } catch(err){
         console.error(err);
-        return res.status(500).json({ msg: 'Internal server error', details: err.message });
+        return res.status(500).json({ msg: 'Internal server error' });
     }
 }

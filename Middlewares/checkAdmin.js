@@ -6,7 +6,11 @@ export const checkAdmin = async (req, res, next) => {
         if(!data || !data.startsWith('Bearer ')) return res.status(401).json({ msg: 'Token either missing or invalid' });
     
         const token = data.split('Bearer ' )[1];
-        verifyToken(token);
+        const decoded = verifyToken(token);
+
+        if(decoded.userId.isAdmin === false){
+            return res.status(401).json({ msg: 'Unauthorized' })
+        }
 
     } catch(err){
         return res.sendStatus(401)
