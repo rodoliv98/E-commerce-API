@@ -5,14 +5,13 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try{
-        const data = req.headers.authorization;
-        if(!data || !data.startsWith('Bearer ')) return res.status(401).json({ msg: 'Token either missing or invalid' });
-        
+        const auth = req.headers.authorization;
+        if(!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ msg: 'Token either missing or invalid' });
+ 
         const removedBearer = auth.split('Bearer ' )[1]
         const token = JSON.parse(removedBearer);
         
-        const payload = verifyToken(token);
-
+        const payload = verifyToken(token.token);
         if(payload.userId.isAdmin === false){
             return res.sendStatus(401);
         }

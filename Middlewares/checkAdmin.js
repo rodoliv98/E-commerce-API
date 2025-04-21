@@ -2,14 +2,16 @@ import { verifyToken } from "../nodeMailer/tokenService.js";
 
 export const checkAdmin = async (req, res, next) => {
     try{
-        const data = req.headers.authorization;
-        if(!data || !data.startsWith('Bearer ')) return res.status(401).json({ msg: 'Token either missing or invalid' });
-    
-        const token = data.split('Bearer ' )[1];
-        const decoded = verifyToken(token);
+        const auth = req.headers.authorization;
+        if(!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ msg: 'Token either missing or invalid' });
+
+        const removedBearer = auth.split('Bearer ' )[1];
+        const token = JSON.parse(removedBearer);
+
+        const decoded = verifyToken(token.token);
 
         if(decoded.userId.isAdmin === false){
-            return res.status(401).json({ msg: 'Unauthorized' })
+            return res.sendStatus(401)
         }
 
     } catch(err){
