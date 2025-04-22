@@ -36,7 +36,7 @@ app.use('/user', usersRoutes)
 app.use('/admin', adminRoutes)
 app.use('/status', statusRoutes)
 
-app.listen(3000, () => console.log('Server running on localhost:3000/'));
+app.listen(3000, () => console.log('Server running'));
 
 /*const start = async () => {
     await client.connect();
