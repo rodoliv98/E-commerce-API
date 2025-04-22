@@ -1,12 +1,11 @@
 import { verifyToken } from '../nodeMailer/tokenService.js';
 
 export async function checkIfTokenExpired(req, res) {
-    const auth = req.authorizarion.bearer;
-
+    const auth = req.headers.authorization;
     if(!auth) return res.sendStatus(200)
-
+        
     const removedBearer = auth.split('Bearer ')[1];
-    const token = JSON.parse(removedBearer);
+    const token = JSON.parse(removedBearer);     
 
     try{
         verifyToken(token.token)
