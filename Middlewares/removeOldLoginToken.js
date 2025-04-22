@@ -1,4 +1,4 @@
-import { verifyToken } from '../nodeMailer/tokenService';
+import { verifyToken } from '../nodeMailer/tokenService.js';
 
 export async function checkIfTokenExpired(req, res) {
     const auth = req.authorizarion.bearer;
