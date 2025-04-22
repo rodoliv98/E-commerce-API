@@ -14,7 +14,7 @@ import 'dotenv/config'
 const app = express();
 
 const corsOptions = {
-    origin: process.env.DEV_URL,
+    origin: process.env.PROD_URL,
     credentials: true,
     optionsSuccessStatus: 200
 };
