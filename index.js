@@ -7,13 +7,14 @@ import productRoutes from './routes/productRoutes.js'
 import cartRoutes from './routes/cart.js'
 import usersRoutes from './routes/users.js'
 import adminRoutes from './routes/admin.js'
+import statusRoutes from './routes/status.js'
 import 'dotenv/config'
 //import { client } from './controllers/productController.js'
 
 const app = express();
 
 const corsOptions = {
-    origin: process.env.PROD_URL,
+    origin: process.env.DEV_URL,
     credentials: true,
     optionsSuccessStatus: 200
 };
@@ -33,6 +34,7 @@ app.use('/products', productRoutes)
 app.use('/cart', cartRoutes)
 app.use('/user', usersRoutes)
 app.use('/admin', adminRoutes)
+app.use('/status', statusRoutes)
 
 app.listen(3000, () => console.log('Server running on localhost:3000/'));
 
