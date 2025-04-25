@@ -20,9 +20,6 @@ export class CartController {
             return res.status(200).json({ msg: 'Compra finalizada', purchaseID: newPurchase._id });
     
         } catch(err){
-            if (err.message === 'Out of stock') {
-                return res.status(400).json({ msg: 'Produto sem estoque suficiente.' });
-            }
             return catchError(err, res);
         }
     }
