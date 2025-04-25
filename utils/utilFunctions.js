@@ -41,5 +41,14 @@ export const reSendEmailToken = async (id, email) => {
 
 export const catchError = async (err, res) => {
     console.error(err);
+
+    if (err.message === 'Out of stock') {
+        return res.status(400).json({ msg: 'Produto sem estoque suficiente.' });
+    }
+
+    if (err.message === 'Total price sent by the frontend dont match') {
+        return res.status(400).json({ msg: 'Good try, but the total price sent by the frontend dont match' });
+    }
+
     return res.status(500).json({ msg: 'Internal server error' });
 }
