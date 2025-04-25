@@ -2,7 +2,7 @@ import express from 'express'
 import { checkSchema } from 'express-validator'
 import { createProduct } from '../Schemas/bodySchemas/createProductSchema.js'
 import { updateProduct } from '../Schemas/bodySchemas/updateProducts.js'
-import { showProducts, showProductsById, createProductInDb, patchProductInDb, deleteProductInDb } from '../controllers/productController.js'
+import { ProductController } from '../controllers/productController.js'
 import { uploadMiddleware } from '../multer/multer.js'
 import bodyValidator from '../Middlewares/bodyValidator.js'
 import idCheck from '../Middlewares/idCheck.js'
@@ -12,15 +12,15 @@ import { multerController } from '../controllers/multerController.js'
 
 const router = express.Router();
 
-router.get('/', showProducts)
+router.get('/', ProductController.showProducts)
 
-router.get('/:id', idCheck, showProductsById)
+router.get('/:id', idCheck, ProductController.showProductsById)
 
-router.post('/', checkSchema(createProduct), checkLogin, checkAdmin, bodyValidator, createProductInDb)
+router.post('/', checkSchema(createProduct), checkLogin, checkAdmin, bodyValidator, ProductController.createProductInDb)
 
-router.patch('/:id', checkSchema(updateProduct), checkLogin, checkAdmin, bodyValidator, idCheck, patchProductInDb)
+router.patch('/:id', checkSchema(updateProduct), checkLogin, checkAdmin, bodyValidator, idCheck, ProductController.patchProductInDb)
 
-router.delete('/:id', checkLogin, checkAdmin, idCheck, deleteProductInDb)
+router.delete('/:id', checkLogin, checkAdmin, idCheck, ProductController.deleteProductInDb)
 
 router.post('/upload', checkLogin, checkAdmin, uploadMiddleware, multerController)
 
